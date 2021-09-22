@@ -8,19 +8,24 @@
 import SwiftUI
 
 struct SubCategoryCardView: View {
+    
     var subCategoryName = "Main"
     var cardColor: Color
     var image: Image
+    
     var body: some View {
         GeometryReader { geometry in
             
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(cardColor.opacity(0.1))
-                Image("kaldereta")
+                image
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width, height: geometry.size.height)
+                    .position(x:geometry.size.width/2, y:geometry.size.height/2 + 50)
+                    .shadow(radius: 2)
+                    .clipped()
                 VStack {
                     HStack {
                         Text(subCategoryName)
@@ -41,6 +46,6 @@ struct SubCategoryCardView: View {
 
 struct SubCategoryCardView_Previews: PreviewProvider {
     static var previews: some View {
-        SubCategoryCardView(cardColor: .green, image: Image("kaldereta"))
+        SubCategoryCardView(cardColor: .green, image: Image("talong"))
     }
 }

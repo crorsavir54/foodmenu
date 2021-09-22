@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		D200AA6526F4397000EFADE7 /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6426F4397000EFADE7 /* Categories.swift */; };
 		D200AA6926F43DFC00EFADE7 /* CategoryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6826F43DFC00EFADE7 /* CategoryMenu.swift */; };
-		D200AA6B26F443E400EFADE7 /* SubCategoryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6A26F443E400EFADE7 /* SubCategoryGrid.swift */; };
 		D200AA6D26F444AF00EFADE7 /* SubCategoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */; };
+		D2331AFC26F9A59A0011DDE2 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */; };
 		D2BAB2B126F32E7400B8961A /* foodmenuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BAB2B026F32E7400B8961A /* foodmenuApp.swift */; };
 		D2BAB2B326F32E7400B8961A /* MainFoodMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BAB2B226F32E7400B8961A /* MainFoodMenu.swift */; };
 		D2BAB2B526F32E7500B8961A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2BAB2B426F32E7500B8961A /* Assets.xcassets */; };
@@ -20,8 +20,8 @@
 /* Begin PBXFileReference section */
 		D200AA6426F4397000EFADE7 /* Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 		D200AA6826F43DFC00EFADE7 /* CategoryMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryMenu.swift; sourceTree = "<group>"; };
-		D200AA6A26F443E400EFADE7 /* SubCategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryGrid.swift; sourceTree = "<group>"; };
 		D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryCardView.swift; sourceTree = "<group>"; };
+		D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		D2BAB2AD26F32E7400B8961A /* foodmenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foodmenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2BAB2B026F32E7400B8961A /* foodmenuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foodmenuApp.swift; sourceTree = "<group>"; };
 		D2BAB2B226F32E7400B8961A /* MainFoodMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFoodMenu.swift; sourceTree = "<group>"; };
@@ -41,6 +41,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D200A9C826FB364B00C8FBE9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		D200AA6626F4397900EFADE7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -54,8 +61,8 @@
 			children = (
 				D2BAB2B226F32E7400B8961A /* MainFoodMenu.swift */,
 				D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */,
-				D200AA6A26F443E400EFADE7 /* SubCategoryGrid.swift */,
 				D200AA6826F43DFC00EFADE7 /* CategoryMenu.swift */,
+				D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -80,8 +87,9 @@
 			isa = PBXGroup;
 			children = (
 				D2BAB2B026F32E7400B8961A /* foodmenuApp.swift */,
-				D200AA6726F4398600EFADE7 /* View */,
 				D200AA6626F4397900EFADE7 /* Model */,
+				D200A9C826FB364B00C8FBE9 /* ViewModel */,
+				D200AA6726F4398600EFADE7 /* View */,
 				D2BAB2B426F32E7500B8961A /* Assets.xcassets */,
 				D2BAB2B926F32E7500B8961A /* Info.plist */,
 				D2BAB2B626F32E7500B8961A /* Preview Content */,
@@ -168,8 +176,8 @@
 			files = (
 				D200AA6926F43DFC00EFADE7 /* CategoryMenu.swift in Sources */,
 				D2BAB2B326F32E7400B8961A /* MainFoodMenu.swift in Sources */,
-				D200AA6B26F443E400EFADE7 /* SubCategoryGrid.swift in Sources */,
 				D2BAB2B126F32E7400B8961A /* foodmenuApp.swift in Sources */,
+				D2331AFC26F9A59A0011DDE2 /* MenuItem.swift in Sources */,
 				D200AA6526F4397000EFADE7 /* Categories.swift in Sources */,
 				D200AA6D26F444AF00EFADE7 /* SubCategoryCardView.swift in Sources */,
 			);
