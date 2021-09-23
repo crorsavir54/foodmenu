@@ -47,7 +47,7 @@ struct SubCategory: Hashable {
 //        return subItems
     }
 
-    static var kaldereta = SubCategory(imageName: "kaldereta", name: "Kaldereta", color: .green)
+    static var beef = SubCategory(imageName: "kaldereta", name: "Beef", color: .green)
     static var talong = SubCategory(imageName: "talong", name: "Talong", color: .purple)
     static var kornbep = SubCategory(imageName: "kornbep", name: "Kornbep", color: .blue)
     static var basta = SubCategory(imageName: "kaldereta", name: "Basta", color: .orange)
@@ -60,7 +60,7 @@ struct SubCategory: Hashable {
     static var hatdog3 = SubCategory(imageName: "hatdog", name: "Hatdog3", color: .red)
     static var hatdog4 = SubCategory(imageName: "hatdog", name: "Hatdog3", color: .pink)
 
-    static var mainSubCategories = [kaldereta, talong, kornbep, basta]
+    static var mainSubCategories = [beef, talong, kornbep, basta]
     static var breakFastSubCategories = [itlog, tosino, soriso, hatdog, hatdog2, hatdog3, hatdog4]
 
 }
@@ -71,6 +71,7 @@ struct Item: Hashable {
     var description: String
     var price = 0.0
     var imageName: String
+    
     var image: Image {
         Image(imageName)
     }
@@ -84,7 +85,19 @@ struct Item: Hashable {
     static var tortangTalong = Item(subcategory: SubCategory.talong, name: "Tortang Talong", description: "Talong na may itlog", price: 125.99, imageName: "talong")
     
     static var items = [omelette, omelette2, omelette3, tortangTalong]
-    
 }
 
-
+struct Cart: Hashable {
+    var items: [Item]
+    var note: String
+    var total: Double {
+        items.lazy.map{$0.price}.reduce(0.0,+)
+    }
+    var itemNames: [String] {
+        items.map{$0.name}
+    }
+    
+    static var cart1 = Cart(items: [Item.omelette, Item.omelette2], note: "This is my dummy cart")
+    
+    static var carts = [cart1]
+}

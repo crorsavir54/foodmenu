@@ -22,19 +22,28 @@ struct MenuItem: View {
             if !subCategory.items.isEmpty {
                 VStack {
                     HStack {
-                        Image(systemName: "chevron.backward.square")
-                        Spacer()
+                        Button(action: {}, label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(lineWidth: 0.5, antialiased: true)
+                                    .foregroundColor(.orange)
+                                Image(systemName: "chevron.left")
+                                    .font(.title3)
+                            }.frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        }).foregroundColor(.orange)
                         Spacer()
                         Text(subCategory.name)
-                            .fontWeight(.semibold)
+                            .font(.title)
+                            .fontWeight(.bold)
                         Spacer()
-                        HStack {
-                            Image(systemName: "square.fill.text.grid.1x2")
+                        Button(action: {}, label: {
                             Image(systemName: "square.grid.2x2")
-                        }
+                                .font(.title2)
+                                .frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        }).foregroundColor(.orange)
 
                     }
-                    .font(.largeTitle)
+                    
                     .padding(.leading)
                     .padding(.trailing)
                     LazyHGrid(rows: [GridItem(.fixed(20))], alignment: .center, spacing: 20) {
@@ -51,16 +60,19 @@ struct MenuItem: View {
                                     ForEach(subCategory.items, id:\.self) { item in
                                             ZStack {
                                                 RoundedRectangle(cornerRadius: 30, style: .continuous)
+                                                    .stroke(lineWidth: 0.1)
+                                                    .opacity(selectedItem.name == item.name ? 0 : 0.5)
+                                                    .frame(width: geometry.size.width/4.5, height: geometry.size.width/4.5)
+                                                RoundedRectangle(cornerRadius: 30, style: .continuous)
                                                     .fill(Color.gray)
                                                     .opacity(selectedItem.name == item.name ? 0.2 : 0)
-                                                    
                                                     .frame(width: geometry.size.width/4.5, height: geometry.size.width/4.5)
                                                 
                                                 Image(item.imageName)
                                                     .resizable()
                                                     .scaledToFit()
                                                     .padding()
-                                                    .frame(width: geometry.size.width/4, height: geometry.size.width/4, alignment: .leading)
+                                                    .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
                                             }
                                             .onTapGesture {
                                                 withAnimation(){
@@ -72,7 +84,8 @@ struct MenuItem: View {
                                 }
                             }
                             .padding()
-                            .frame(width: geometry.size.width/4+30)
+                            .frame(width: geometry.size.width/3)
+                        Divider()
                             Spacer()
                             VStack(alignment: .leading, spacing: 4) {
                                 Image(selectedItem.imageName)
@@ -93,8 +106,51 @@ struct MenuItem: View {
                                         .font(.largeTitle)
                                         .fontWeight(.black)
                                 }
-                                Text(selectedItem.description)
-
+                                VStack {
+                                    ScrollView {
+                                        Text(selectedItem.description)
+                                            .font(.body)
+                                            .foregroundColor(.gray)
+                                    }
+                                    .frame(width: geometry.size.width/2, height: 120, alignment: .topLeading)
+                                }
+                                HStack {
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {}) {
+                                            Image(systemName: "minus.circle.fill")
+                                                .foregroundColor(.orange)
+                                                .font(.title)
+                                        }
+                                        Text("1")
+                                            .padding(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+                                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.orange, lineWidth: 2))
+                                        Button(action: {}) {
+                                            Image(systemName: "plus.circle.fill")
+                                                .foregroundColor(.orange)
+                                                .font(.title)
+                                        }
+                                        Spacer()
+                                    }
+                                    
+                                }.padding(.bottom)
+                                HStack {
+                                    Spacer()
+                                    Button(action: {}) {
+                                        Text("Add to Order")
+                                            .fontWeight(.bold)
+                                            .padding()
+//                                            .overlay(RoundedRectangle(cornerRadius: 30)
+//                                                        .foregroundColor(.orange))
+                                            .background(RoundedRectangle(cornerRadius: 30)
+//                                                            .strokeBorder()
+                                                            .frame(width: 150, height: 40)
+                                                            .foregroundColor(.orange))
+//                                            .foregroundColor(.orange)
+                                    }.foregroundColor(.white)
+                                    Spacer()
+                                }
                             }
                             .frame(width: geometry.size.width/2, alignment: .leading)
                         Spacer()

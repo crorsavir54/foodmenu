@@ -19,13 +19,14 @@ struct SubCategoryCardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(cardColor.opacity(0.1))
+                    .clipped()
                 image
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .position(x:geometry.size.width/2, y:geometry.size.height/2 + 50)
                     .shadow(radius: 2)
-                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 25))
                 VStack {
                     HStack {
                         Text(subCategoryName)
@@ -46,6 +47,6 @@ struct SubCategoryCardView: View {
 
 struct SubCategoryCardView_Previews: PreviewProvider {
     static var previews: some View {
-        SubCategoryCardView(cardColor: .green, image: Image("talong"))
+        SubCategoryCardView(cardColor: .green, image: Image("kaldereta"))
     }
 }
