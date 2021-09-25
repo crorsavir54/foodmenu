@@ -38,13 +38,6 @@ struct SubCategory: Hashable {
     var items: [Item] {
         return Item.items.filter{$0.subCategoryName == self.name}
         
-//        var subItems = [Item]()
-//        for item in Item.items {
-//            if item.subCategoryName == self.name {
-//                subItems.append(item)
-//            }
-//        }
-//        return subItems
     }
 
     static var beef = SubCategory(imageName: "kaldereta", name: "Beef", color: .green)
@@ -87,17 +80,16 @@ struct Item: Hashable {
     static var items = [omelette, omelette2, omelette3, tortangTalong]
 }
 
-struct Cart: Hashable {
-    var items: [Item]
-    var note: String
-    var total: Double {
-        items.lazy.map{$0.price}.reduce(0.0,+)
-    }
-    var itemNames: [String] {
-        items.map{$0.name}
-    }
-    
-    static var cart1 = Cart(items: [Item.omelette, Item.omelette2], note: "This is my dummy cart")
-    
-    static var carts = [cart1]
-}
+//struct Cart: Hashable {
+//    var items: [Item]
+//    var note: String
+//    var total: Double {
+//        items.lazy.map{$0.price}.reduce(0.0,+)
+//    }
+//    var itemNames: [String] {
+//        items.map{$0.name}
+//    }
+//    
+//    static var cart1 = Cart(items: [Item.omelette, Item.omelette2], note: "This is my dummy cart")
+//    static var carts = [cart1]
+//}

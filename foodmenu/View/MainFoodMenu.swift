@@ -10,16 +10,17 @@ import SwiftUI
 struct mainFoodMenu: View {
     
     @Namespace var namespace
-    @State var selectedCategoryName = Restaurant.main.name
-    @State var selectedCategory = SubCategory.mainSubCategories
-    @State var selectedSubCategory = SubCategory.itlog
-    @State var cart = Cart.cart1
+    @ObservedObject var mainCategories = OrderMenu()
+    @ObservedObject var cart = CartViewModel(cart: Cart(items: [], note: ""))
+    
+    @State var selectedCategory = MainCategory(name: "Main", icon: "🍽")
+    @State var subcategories: [SubCat] = [SubCat(name: "kaldereta", color: .red, category: "Main")]
+    @State var selectedSubCategory = SubCat(name: "kaldereta", color: .red, category: "Main")
+    
+//    @State var cart = Cart.cart1
     @State var isSubcategoryPresented = false
     @State var isCartPresented = false
-    
-    
-    
-    
+    @State var isEditModePresented = false
     
     var body: some View {
         ZStack {
@@ -29,9 +30,10 @@ struct mainFoodMenu: View {
                         Button(action: {
                             // TODO: - Show menu
                             print("Show Menu")
+                            isEditModePresented.toggle()
                         }, label: {
                             Image(systemName: "line.horizontal.3")
-                                .font(.system(size: geometry.size.height/30))
+                                .font(.system(size: geometry.size.height/30, weight: .thin))
                                 .foregroundColor(.orange)
                         })
                         Text("My Restaurant")
@@ -45,17 +47,26 @@ struct mainFoodMenu: View {
                             print("Show Cart Content")
                         }, label: {
                             HStack{
-                                Image(systemName: "cart")
-                                    .font(UIDevice.current.userInterfaceIdiom == .pad ? .largeTitle : .title)
-                                Text("\(cart.items.count)")
-                                    .font(UIDevice.current.userInterfaceIdiom == .pad ? .title : .body)
-                                    .padding(.trailing)
+                                Circle()
+                                    .frame(width: 20, height: 20).overlay(Text("\(cart.cart.items.count)")
+                                                                            .font(UIDevice.current.userInterfaceIdiom == .pad ? .body : .caption)
+                                                                            .fontWeight(.bold)
+                                                                            .foregroundColor(.white))
+                                    .offset(x: 22, y: -10)
+                                Image("food")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .opacity(0.8)
+                                //                                    .font(UIDevice.current.userInterfaceIdiom == .pad ? .largeTitle : .title
+
+                                //                                    .padding(.trailing)
                             }
-                            .padding(10)
-                            .background(Color.orange)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .foregroundColor(.white)
-                        })
+                            //                            .padding(10)
+                            //                            .background(Color.orange)
+                            //                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .foregroundColor(.orange)
+                        }).buttonStyle(GrowingButton())
                     }
                     // Top bar
                     .padding(.bottom)
@@ -63,12 +74,12 @@ struct mainFoodMenu: View {
                     .padding(.trailing)
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHGrid(rows: [GridItem(.fixed(20))], alignment: .center, spacing: 20, content: {
-                            ForEach(Restaurant.categories, id:\.self) { category in
+                            ForEach(mainCategories.categories, id:\.self) { category in
                                 VStack {
                                     ZStack{
                                         RoundedRectangle(cornerRadius: 15, style: .continuous)
                                             .fill(Color.gray)
-                                            .brightness(selectedCategoryName == category.name ? 0 : 0.4)
+                                            .brightness(selectedCategory.name == category.name ? 0 : 0.4)
                                             .frame(width: geometry.size.width/5, height: geometry.size.width/5)
                                         Text(category.icon)
                                             .font(.system(size:geometry.size.width/10))
@@ -79,8 +90,8 @@ struct mainFoodMenu: View {
                                 .padding(5)
                                 .onTapGesture {
                                     withAnimation(){
-                                        selectedCategoryName = category.name
-                                        selectedCategory = category.subcategories
+                                        selectedCategory = category
+                                        subcategories = mainCategories.allSubCategeries(category: category)
                                     }
                                     
                                 }
@@ -97,26 +108,60 @@ struct mainFoodMenu: View {
             VStack {
                 Spacer()
                 HStack {
-                    Button(action: {
-                        // TODO: Toggle order summary sheet, and make order
-                        isCartPresented.toggle()
-                        print("Show Order Confirmation")
-                    }, label: {
-                        Text("Order")
-                            .font(.system(size: 30))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(width: UIScreen.main.bounds.size.width/2, height: 55, alignment: .center)
-                            .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                    }).buttonStyle(GrowingButton())
-                        .padding()
-                        .clipped()
-                        .shadow(color: Color.black.opacity(0.3),
-                                radius: 3,
-                                x: 3,
-                                y: 3)
+                    HStack(spacing: 0) {
+                        Button(action: { isCartPresented.toggle() }) {
+                            ZStack(alignment: .leading) {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                    .frame(width: UIScreen.main.bounds.size.width/2-30, height: 50)
+                                Rectangle()
+                                    .foregroundColor(.orange).opacity(0.2)
+                                    .frame(width: UIScreen.main.bounds.size.width/2-30, height: 50)
+                                VStack (alignment: .leading) {
+                                    HStack(spacing: 0) {
+                                        Text("\(cart.cart.items.count)")
+                                        Text(" items")
+                                            .font(.system(size: 10))
+                                        Text("|")
+                                            .fontWeight(.thin)
+                                            .padding(.leading, 5)
+                                            .padding(.trailing)
+                                        Text("$ ")
+                                            .font(.caption2)
+                                            .fontWeight(.bold)
+                                        Text("\(cart.total, specifier: "%.2f")")
+                                            .fontWeight(.semibold)
+                                            .font(.callout)
+                                    }
+                                    Text("*Extra charges may apply")
+                                        .fontWeight(.light)
+                                        .font(.system(size: 10))
+                     
+                                }.padding(.leading,30)
+                            }
+                        }.foregroundColor(.orange)
+                        Button(action: {}) {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.orange)
+                                    .frame(width: UIScreen.main.bounds.size.width/2-40, height: 50)
+                                HStack {
+                                    Text("Order now")
+                                        .fontWeight(.semibold)
+                                    Image(systemName: "arrow.right")
+                                }
+                            }
+                        }.foregroundColor(.white)
+                        //                            .offset(x: -20, y: 0)
+                    }
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .shadow(color: Color.black.opacity(0.2),
+                            radius: 3,
+                            x: 1,
+                            y: 3)
                     
-                }
+                }.padding(.bottom)
             }.edgesIgnoringSafeArea([.bottom])
         }
     }
@@ -139,10 +184,11 @@ struct mainFoodMenu: View {
             NavigationView{
                 ScrollView {
                     LazyVGrid(columns: subCategoryColumns, spacing: 10, content: {
-                        ForEach(selectedCategory, id:\.self) { subcategory in
+                        ForEach(mainCategories.allSubCategeries(category: selectedCategory), id:\.self) { subcategory in
                             Button(action: {
                                 isSubcategoryPresented.toggle()
                                 selectedSubCategory = subcategory
+                                
                             }, label: {
                                 if UIDevice.current.userInterfaceIdiom == .pad {
                                     SubCategoryCardView(subCategoryName: subcategory.name, cardColor: subcategory.color, image: subcategory.image)
@@ -162,12 +208,15 @@ struct mainFoodMenu: View {
                 }
                 .padding(.leading)
                 .padding(.trailing)
-                .navigationTitle("\(selectedCategoryName) Menu")
+                .navigationTitle("\(selectedCategory.name) Menu")
                 .sheet(isPresented: $isSubcategoryPresented) {
-                    MenuItem(subCategory: $selectedSubCategory, selectedItem: selectedSubCategory.items.isEmpty ? Item.omelette : selectedSubCategory.items[0])
+                    MenuItem(cart: cart, subCategory: $selectedSubCategory, selectedItem: mainCategories.allItems(subCategory: selectedSubCategory).isEmpty ? CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99) : mainCategories.allItems(subCategory: selectedSubCategory)[0])
                 }
                 .sheet(isPresented: $isCartPresented) {
-                    CartView()
+                    CartView(cart: cart)
+                }
+                .sheet(isPresented: $isEditModePresented) {
+                    EditMenuView(mainCategories: mainCategories)
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())
