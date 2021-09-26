@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CartView: View {
-    @ObservedObject var cart: CartViewModel
+    @ObservedObject var cartView: CartViewModel
     
     @State var itemNumber = 1.0
     
@@ -17,27 +17,27 @@ struct CartView: View {
                 Text("My Cart")
                     .fontWeight(.bold)
                     .font(.largeTitle)
-            ForEach(cart.cart.items.unique(), id:\.self) { item in
+            ForEach(cartView.cart.items.unique(), id:\.self) { item in
                     HStack {
                         Image(item.name)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100, height: 100, alignment: .leading)
                         VStack(alignment: .leading) {
-                            Text("\(item.name) x \(cart.itemNumber(item: item), specifier: "%.0f")")
+                            Text("\(item.name) x \(cartView.itemNumber(item: item), specifier: "%.0f")")
                                 .font(.body)
                             HStack(spacing: 2){
                                 Text("$")
                                     .font(.caption2)
                                     .fontWeight(.bold)
-                                Text("\(item.price*cart.itemNumber(item: item), specifier: "%.2f")")
+                                Text("\(item.price*cartView.itemNumber(item: item), specifier: "%.2f")")
                                     .fontWeight(.semibold)
                                 Spacer()
                                 HStack {
-                                    Button(action: {cart.removeItem(item: item)}, label: {
+                                    Button(action: {cartView.removeItem(item: item)}, label: {
                                         Image(systemName: "minus.circle")
                                     })
-                                    Button(action: {cart.incrementItem(item: item)}, label: {
+                                    Button(action: {cartView.incrementItem(item: item)}, label: {
                                         Image(systemName: "plus.circle")
                                     })
                                 }.foregroundColor(.orange)
@@ -47,7 +47,7 @@ struct CartView: View {
                     }
                     Divider()
                 }
-            Text("Total: $\(cart.total, specifier: "%.2f")")
+            Text("Total: $\(cartView.total, specifier: "%.2f")")
                 .fontWeight(.bold)
             HStack {
                 Spacer()
@@ -84,6 +84,6 @@ struct CartView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView(cart: CartViewModel(cart: Cart(items: [], note: "")))
+        CartView(cartView: CartViewModel(cart: Cart(items: [], note: "")))
     }
 }

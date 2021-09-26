@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D200AA6526F4397000EFADE7 /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6426F4397000EFADE7 /* Categories.swift */; };
 		D200AA6D26F444AF00EFADE7 /* SubCategoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */; };
 		D217042A26FC34DD00056BEC /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217042926FC34DD00056BEC /* CartView.swift */; };
-		D223B80A26FE085900C51F8C /* EditCategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D223B80926FE085900C51F8C /* EditCategoryDetailView.swift */; };
 		D2298B3726FF0E8F00D82FA0 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2298B3626FF0E8F00D82FA0 /* CartViewModel.swift */; };
 		D2298B3926FF1B5200D82FA0 /* Array+RemoveDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2298B3826FF1B5200D82FA0 /* Array+RemoveDuplicates.swift */; };
 		D2331AFC26F9A59A0011DDE2 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */; };
@@ -23,13 +21,13 @@
 		D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */; };
 		D2CC7E9C26FDF9D1005E60CD /* EditItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */; };
 		D2CC7E9E26FE0005005E60CD /* EditMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */; };
+		D2FDF5942700320A00B811F0 /* EditItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */; };
+		D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D200AA6426F4397000EFADE7 /* Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 		D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryCardView.swift; sourceTree = "<group>"; };
 		D217042926FC34DD00056BEC /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
-		D223B80926FE085900C51F8C /* EditCategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryDetailView.swift; sourceTree = "<group>"; };
 		D2298B3626FF0E8F00D82FA0 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		D2298B3826FF1B5200D82FA0 /* Array+RemoveDuplicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+RemoveDuplicates.swift"; sourceTree = "<group>"; };
 		D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
@@ -44,6 +42,8 @@
 		D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryView.swift; sourceTree = "<group>"; };
 		D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsView.swift; sourceTree = "<group>"; };
 		D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuView.swift; sourceTree = "<group>"; };
+		D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemDetailsView.swift; sourceTree = "<group>"; };
+		D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,6 @@
 		D200AA6626F4397900EFADE7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D200AA6426F4397000EFADE7 /* Categories.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -80,9 +79,10 @@
 				D2BAB2B226F32E7400B8961A /* MainFoodMenu.swift */,
 				D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */,
 				D2CC7E9526FDEB4F005E60CD /* EditCategoryView.swift */,
-				D223B80926FE085900C51F8C /* EditCategoryDetailView.swift */,
 				D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */,
+				D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */,
 				D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */,
+				D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */,
 				D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */,
 				D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */,
 				D217042926FC34DD00056BEC /* CartView.swift */,
@@ -198,18 +198,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2FDF5942700320A00B811F0 /* EditItemDetailsView.swift in Sources */,
 				D217042A26FC34DD00056BEC /* CartView.swift in Sources */,
-				D223B80A26FE085900C51F8C /* EditCategoryDetailView.swift in Sources */,
 				D2CC7E9C26FDF9D1005E60CD /* EditItemsView.swift in Sources */,
 				D2298B3726FF0E8F00D82FA0 /* CartViewModel.swift in Sources */,
 				D2BAB2B326F32E7400B8961A /* MainFoodMenu.swift in Sources */,
 				D27A30E826FDA84D00FF3170 /* OrderMenu.swift in Sources */,
 				D2CC7E9626FDEB4F005E60CD /* EditCategoryView.swift in Sources */,
+				D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */,
 				D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */,
 				D2BAB2B126F32E7400B8961A /* foodmenuApp.swift in Sources */,
 				D2331AFC26F9A59A0011DDE2 /* MenuItem.swift in Sources */,
 				D2CC7E9E26FE0005005E60CD /* EditMenuView.swift in Sources */,
-				D200AA6526F4397000EFADE7 /* Categories.swift in Sources */,
 				D200AA6D26F444AF00EFADE7 /* SubCategoryCardView.swift in Sources */,
 				D2298B3926FF1B5200D82FA0 /* Array+RemoveDuplicates.swift in Sources */,
 			);
@@ -341,6 +341,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"foodmenu/Preview Content\"";
+				DEVELOPMENT_TEAM = GX53PEYP7Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = foodmenu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -348,7 +349,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = carlos.foodmenu;
+				PRODUCT_BUNDLE_IDENTIFIER = carlos.foodmenu.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -362,6 +363,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"foodmenu/Preview Content\"";
+				DEVELOPMENT_TEAM = GX53PEYP7Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = foodmenu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -369,7 +371,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = carlos.foodmenu;
+				PRODUCT_BUNDLE_IDENTIFIER = carlos.foodmenu.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -8,21 +8,24 @@ import Foundation
 import SwiftUI
 
 
-struct MainCategory: Hashable {
+struct MainCategory: Hashable, Identifiable{
+    var id = UUID()
     var name: String
-    var icon: String
+    var icon: String = ""
 }
 
-struct SubCat: Hashable {
+struct SubCat: Hashable, Identifiable{
+    var id = UUID()
     var name: String
-    var color: Color
-    var category: String = "none"
+    var color: Color = .white
+    var category: String
     var image: Image {
         Image(name)
     }
 }
 
-struct CatItem: Hashable {
+struct CatItem: Hashable, Identifiable{
+    var id = UUID()
     var subcategory: String = "none"
     var name: String
     var description: String
@@ -80,6 +83,29 @@ class OrderMenu: ObservableObject {
     
     // MARK: - Intents
     
+    func returnCategoryName(name: String) -> String {
+        if let categoryname = subCategories.first(where: {$0.name == name}) {
+            return categoryname.category
+        }
+        return ""
+    }
+    
+    func allCategories() -> [String] {
+        var allCategories = [String]()
+        for category in categories {
+            allCategories.append(category.name)
+        }
+        return allCategories
+    }
+    
+    func allSubCategories() -> [String] {
+        var allSubCategories = [String]()
+        for category in subCategories {
+            allSubCategories.append(category.name)
+        }
+        return allSubCategories
+    }
+
     func allItems(subCategory: SubCat) -> [CatItem] {
         return items.filter{$0.subcategory == subCategory.name}
     }
@@ -103,7 +129,7 @@ class OrderMenu: ObservableObject {
     }
     
     func insertSubCategory(subCategory: SubCat) {
-        if let index = subCategories.firstIndex(of: subCategory) {
+        if let index = subCategories.firstIndex(where: {$0.id == subCategory.id}){
             subCategories[index] = subCategory
         } else {
             subCategories.append(subCategory)
@@ -115,4 +141,14 @@ class OrderMenu: ObservableObject {
             subCategories.remove(at: index)
         }
     }
+    
+    func insertItem(item: CatItem) {
+        if let index = items.firstIndex(where: {$0.id == item.id}) {
+            items[index] = item
+        } else {
+            items.append(item)
+        }
+    }
+    
+    
 }

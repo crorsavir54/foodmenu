@@ -7,10 +7,13 @@
 
 import Foundation
 
-struct Cart: Hashable {
+struct Cart: Hashable, Identifiable {
+    var id: UUID
     var items: [CatItem]
     var note: String
-    init(items: [CatItem], note: String) {
+    
+    init(id: UUID = UUID(),items: [CatItem], note: String) {
+        self.id = id
         self.items = items
         self.note = note
     }
@@ -23,10 +26,10 @@ class CartViewModel: ObservableObject {
     init(cart: Cart) {
         self.cart = cart
         
-        self.cart.note = "Basta amo na note ini nako"
-        self.cart.items = [CatItem(subcategory: "soda", name: "Coke", description: "Itom na tubig", price: 5.99),
-                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na ga bula2", price: 5.99),
-                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na ga bula2", price: 5.99)]
+//        self.cart.note = "Basta amo na note ini nako"
+//        self.cart.items = [CatItem(subcategory: "soda", name: "Coke", description: "Itom na tubig", price: 5.99),
+//                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99),
+//                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99)]
     }
     
     var total: Double {

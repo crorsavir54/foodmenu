@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct MenuItem: View {
-    @ObservedObject var items = OrderMenu()
+    @ObservedObject var items: OrderMenu
     @ObservedObject var cart: CartViewModel
     @Binding var subCategory: SubCat
-    @State var selectedItem: CatItem
+    @State var selectedItem = CatItem(name: "", description: "")
     @State var tabNames = ["All", "New", "Popular", "New Items"]
+    @Environment(\.presentationMode) var presentationMode
 //    @State var cart = Cart.cart1
     
-    func allItems() -> [CatItem] {
-        return items.allItems(subCategory: subCategory)
-    }
-    
+//    func allItems() -> [CatItem] {
+//        return items.allItems(subCategory: subCategory)
+//    }
+//
     let columns = [
         GridItem(.flexible(minimum: 40), spacing: 10)
     ]
     
     var body: some View {
-        
         GeometryReader { geometry in
-            if !allItems().isEmpty {
+            if !items.allItems(subCategory: subCategory).isEmpty {
                 VStack {
                     HStack {
-                        Button(action: {}, label: {
+                        Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .strokeBorder(lineWidth: 0.5, antialiased: true)
@@ -50,7 +50,6 @@ struct MenuItem: View {
                         }).foregroundColor(.orange)
                         
                     }
-                    
                     .padding(.leading)
                     .padding(.trailing)
                     LazyHGrid(rows: [GridItem(.fixed(20))], alignment: .center, spacing: 20) {
@@ -64,7 +63,7 @@ struct MenuItem: View {
                     HStack (alignment: .top) {
                         ScrollView {
                             LazyVGrid(columns: columns, alignment: .leading) {
-                                ForEach(items.allItems(subCategory: subCategory), id:\.self) { item in
+                                ForEach(items.items.filter{$0.subcategory == subCategory.name}, id:\.self) { item in
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 30, style: .continuous)
                                             .stroke(lineWidth: 0.1)
@@ -86,9 +85,14 @@ struct MenuItem: View {
                                             selectedItem = item
                                         }
                                     }
-                                    
                                 }
                             }
+                        }
+                        .onAppear() {
+                            if !items.allItems(subCategory: subCategory).isEmpty {
+                                selectedItem = items.allItems(subCategory: subCategory)[0]
+                            }
+                            print(items.allItems(subCategory: subCategory))
                         }
                         .padding()
                         .frame(width: geometry.size.width/3)
@@ -119,29 +123,29 @@ struct MenuItem: View {
                                         .font(.body)
                                         .foregroundColor(.gray)
                                 }
-                                .frame(width: geometry.size.width/2, height: 120, alignment: .topLeading)
+                                .frame(width: geometry.size.width/2, height: 75, alignment: .topLeading)
                             }
-//                            HStack {
-//                                HStack {
-//                                    Spacer()
-//                                    Button(action: {}) {
-//                                        Image(systemName: "minus.circle.fill")
-//                                            .foregroundColor(.orange)
-//                                            .font(.title)
-//                                    }
-//                                    Text("1")
-//                                        .padding(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
-//                                        .overlay(RoundedRectangle(cornerRadius: 10)
-//                                                    .stroke(Color.orange, lineWidth: 2))
-//                                    Button(action: {}) {
-//                                        Image(systemName: "plus.circle.fill")
-//                                            .foregroundColor(.orange)
-//                                            .font(.title)
-//                                    }
-//                                    Spacer()
-//                                }
-//
-//                            }.padding(.bottom)
+                            HStack {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {cart.removeItem(item: selectedItem)}) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundColor(.orange)
+                                            .font(.title)
+                                    }
+                                    Text("\(cart.itemNumber(item: selectedItem), specifier: "%.0f")")
+                                        .padding(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+                                        .overlay(RoundedRectangle(cornerRadius: 5)
+                                                    .stroke(Color.orange, lineWidth: 1))
+                                    Button(action: {cart.incrementItem(item: selectedItem)}) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .foregroundColor(.orange)
+                                            .font(.title)
+                                    }
+                                    Spacer()
+                                }
+
+                            }.padding(.bottom)
                         }
                         .frame(width: geometry.size.width/2, alignment: .leading)
                         Spacer()
@@ -202,6 +206,28 @@ struct MenuItem: View {
                 
             } else {
                 VStack {
+                    HStack {
+                        Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(lineWidth: 0.5, antialiased: true)
+                                    .foregroundColor(.orange)
+                                Image(systemName: "chevron.left")
+                                    .font(.title3)
+                            }.frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        }).foregroundColor(.orange)
+                        Spacer()
+                        Text(subCategory.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button(action: {}, label: {
+                            Image(systemName: "square.grid.2x2")
+                                .font(.title2)
+                                .frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        }).foregroundColor(.orange)
+                        
+                    }.padding()
                     Spacer()
                     HStack(alignment: .center){
                         Spacer()
@@ -210,6 +236,8 @@ struct MenuItem: View {
                         Spacer()
                     }
                     Spacer()
+                }.onAppear {
+                    print("FROM MENU ITEM VIEW: \(items.items)")
                 }
                 
             }
@@ -219,6 +247,6 @@ struct MenuItem: View {
 
 struct MenuItem_Previews: PreviewProvider {
     static var previews: some View {
-        MenuItem(cart: CartViewModel(cart: Cart(items: [], note: "")), subCategory: .constant(SubCat(name: "itlog", color: .yellow, category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99))
+        MenuItem(items: OrderMenu(), cart: CartViewModel(cart: Cart(items: [], note: "")), subCategory: .constant(SubCat(name: "itlog", color: .yellow, category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99))
     }
 }

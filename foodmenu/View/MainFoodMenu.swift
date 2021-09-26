@@ -12,12 +12,9 @@ struct mainFoodMenu: View {
     @Namespace var namespace
     @ObservedObject var mainCategories = OrderMenu()
     @ObservedObject var cart = CartViewModel(cart: Cart(items: [], note: ""))
-    
     @State var selectedCategory = MainCategory(name: "Main", icon: "🍽")
-    @State var subcategories: [SubCat] = [SubCat(name: "kaldereta", color: .red, category: "Main")]
-    @State var selectedSubCategory = SubCat(name: "kaldereta", color: .red, category: "Main")
-    
-//    @State var cart = Cart.cart1
+    @State var subcategories: [SubCat] = [SubCat(name: "", color: .red, category: "")]
+    @State var selectedSubCategory = SubCat(name: "", color: .red, category: "")
     @State var isSubcategoryPresented = false
     @State var isCartPresented = false
     @State var isEditModePresented = false
@@ -184,17 +181,16 @@ struct mainFoodMenu: View {
             NavigationView{
                 ScrollView {
                     LazyVGrid(columns: subCategoryColumns, spacing: 10, content: {
-                        ForEach(mainCategories.allSubCategeries(category: selectedCategory), id:\.self) { subcategory in
+                        ForEach(mainCategories.subCategories.filter{$0.category == selectedCategory.name}, id:\.self) { subcategory in
                             Button(action: {
-                                isSubcategoryPresented.toggle()
                                 selectedSubCategory = subcategory
+                                isSubcategoryPresented.toggle()
                                 
                             }, label: {
                                 if UIDevice.current.userInterfaceIdiom == .pad {
                                     SubCategoryCardView(subCategoryName: subcategory.name, cardColor: subcategory.color, image: subcategory.image)
                                         .frame(minWidth: 0, maxWidth: .infinity)
                                         .frame(minHeight: 100, idealHeight: 350, maxHeight: 400)
-                                    
                                 } else {
                                     SubCategoryCardView(subCategoryName: subcategory.name, cardColor: subcategory.color,image: subcategory.image)
                                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -210,14 +206,18 @@ struct mainFoodMenu: View {
                 .padding(.trailing)
                 .navigationTitle("\(selectedCategory.name) Menu")
                 .sheet(isPresented: $isSubcategoryPresented) {
-                    MenuItem(cart: cart, subCategory: $selectedSubCategory, selectedItem: mainCategories.allItems(subCategory: selectedSubCategory).isEmpty ? CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99) : mainCategories.allItems(subCategory: selectedSubCategory)[0])
+                    MenuItem(items: mainCategories, cart: cart, subCategory: $selectedSubCategory)
+                    
                 }
                 .sheet(isPresented: $isCartPresented) {
-                    CartView(cart: cart)
+                    CartView(cartView: cart)
                 }
                 .sheet(isPresented: $isEditModePresented) {
                     EditMenuView(mainCategories: mainCategories)
                 }
+            }
+            .onAppear {
+                print(mainCategories.items)
             }
             .navigationViewStyle(StackNavigationViewStyle())
         }
