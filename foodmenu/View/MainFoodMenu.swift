@@ -12,6 +12,7 @@ struct mainFoodMenu: View {
     @Namespace var namespace
     @ObservedObject var mainCategories = OrderMenu()
     @ObservedObject var cart = CartViewModel(cart: Cart(items: [], note: ""))
+    @ObservedObject var orderViewModel = Orders()
     @State var selectedCategory = MainCategory(name: "Main", icon: "🍽")
     @State var subcategories: [SubCat] = [SubCat(name: "", color: .red, category: "")]
     @State var selectedSubCategory = SubCat(name: "", color: .red, category: "")
@@ -86,7 +87,7 @@ struct mainFoodMenu: View {
                                 }
                                 .padding(5)
                                 .onTapGesture {
-                                    withAnimation(){
+                                    withAnimation(.easeInOut){
                                         selectedCategory = category
                                         subcategories = mainCategories.allSubCategeries(category: category)
                                     }
@@ -137,7 +138,10 @@ struct mainFoodMenu: View {
                                 }.padding(.leading,30)
                             }
                         }.foregroundColor(.orange)
-                        Button(action: {}) {
+                        Button(action: {
+                            orderViewModel.addOrder(order: Order(order: cart.cart, status: .pending))
+                            cart.clearCart()
+                        }) {
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(.orange)
@@ -205,15 +209,14 @@ struct mainFoodMenu: View {
                 .padding(.leading)
                 .padding(.trailing)
                 .navigationTitle("\(selectedCategory.name) Menu")
-                .sheet(isPresented: $isSubcategoryPresented) {
-                    MenuItem(items: mainCategories, cart: cart, subCategory: $selectedSubCategory)
-                    
+                .fullScreenCover(isPresented: $isSubcategoryPresented) {
+                    MenuItem(items: mainCategories, cart: cart, orderViewModel: orderViewModel, subCategory: $selectedSubCategory)
                 }
                 .sheet(isPresented: $isCartPresented) {
-                    CartView(cartView: cart)
+                    CartView(cartView: cart, orderViewModel: orderViewModel)
                 }
-                .sheet(isPresented: $isEditModePresented) {
-                    EditMenuView(mainCategories: mainCategories)
+                .fullScreenCover(isPresented: $isEditModePresented) {
+                    EditMenuView(mainCategories: mainCategories, orderViewModel: orderViewModel)
                 }
             }
             .onAppear {
@@ -229,6 +232,7 @@ struct GrowingButton: ButtonStyle {
         configuration.label
             .scaleEffect(configuration.isPressed ? 1.1 : 1)
             .animation(.easeOut(duration: 0.3), value: configuration.isPressed)
+        
     }
 }
 

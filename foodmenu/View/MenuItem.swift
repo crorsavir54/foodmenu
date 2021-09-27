@@ -10,6 +10,7 @@ import SwiftUI
 struct MenuItem: View {
     @ObservedObject var items: OrderMenu
     @ObservedObject var cart: CartViewModel
+    @ObservedObject var orderViewModel: Orders
     @Binding var subCategory: SubCat
     @State var selectedItem = CatItem(name: "", description: "")
     @State var tabNames = ["All", "New", "Popular", "New Items"]
@@ -125,6 +126,14 @@ struct MenuItem: View {
                                 }
                                 .frame(width: geometry.size.width/2, height: 75, alignment: .topLeading)
                             }
+                            if !selectedItem.inStock {
+                                HStack {
+                                    Text("Out of Stock")
+                                        .font(.caption2)
+                                        .foregroundColor(.red)
+                                }
+                            }
+
                             HStack {
                                 HStack {
                                     Spacer()
@@ -132,7 +141,7 @@ struct MenuItem: View {
                                         Image(systemName: "minus.circle.fill")
                                             .foregroundColor(.orange)
                                             .font(.title)
-                                    }
+                                    }.disabled(!selectedItem.inStock)
                                     Text("\(cart.itemNumber(item: selectedItem), specifier: "%.0f")")
                                         .padding(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                                         .overlay(RoundedRectangle(cornerRadius: 5)
@@ -141,7 +150,7 @@ struct MenuItem: View {
                                         Image(systemName: "plus.circle.fill")
                                             .foregroundColor(.orange)
                                             .font(.title)
-                                    }
+                                    }.disabled(!selectedItem.inStock)
                                     Spacer()
                                 }
 
@@ -174,7 +183,6 @@ struct MenuItem: View {
                                         Text("\(cart.total, specifier: "%.2f")")
                                             .fontWeight(.semibold)
                                             .font(.callout)
-                                        
                                     }
                                     Text("Extra charges may apply")
                                         .font(.system(size: 10))
@@ -182,18 +190,30 @@ struct MenuItem: View {
                                 }.padding(.leading,30)
                             }
                         }.foregroundColor(.orange)
-                        Button(action: {cart.incrementItem(item: selectedItem)}) {
+                        Button(action: {
+                            cart.incrementItem(item: selectedItem)
+                        }) {
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(.orange)
                                     .frame(width: geometry.size.width/2-40, height: 50)
-                                HStack {
-                                    Text("Add to order")
-                                        .fontWeight(.semibold)
-                                    Image(systemName: "arrow.right")
+                                if !selectedItem.inStock {
+                                        HStack {
+                                            Text("Out of Stock")
+                                                .fontWeight(.semibold)
+                                        }
+                                } else {
+                                    HStack {
+                                        Text("Add to order")
+                                            .fontWeight(.semibold)
+                                        Image(systemName: "arrow.right")
+                                    }
                                 }
+
                             }
-                        }.foregroundColor(.white)
+                        }
+                        .disabled(!selectedItem.inStock)
+                        .foregroundColor(.white)
                     }
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -247,6 +267,6 @@ struct MenuItem: View {
 
 struct MenuItem_Previews: PreviewProvider {
     static var previews: some View {
-        MenuItem(items: OrderMenu(), cart: CartViewModel(cart: Cart(items: [], note: "")), subCategory: .constant(SubCat(name: "itlog", color: .yellow, category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99))
+        MenuItem(items: OrderMenu(), cart: CartViewModel(cart: Cart(items: [], note: "")), orderViewModel: Orders(), subCategory: .constant(SubCat(name: "itlog", color: .yellow, category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99, inStock: false))
     }
 }

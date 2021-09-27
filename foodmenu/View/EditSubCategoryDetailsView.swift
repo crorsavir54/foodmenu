@@ -14,21 +14,40 @@ struct EditSubCategoryDetailsView: View {
     @State private var selectedCategory = ""
     
     var body: some View {
-        VStack {
+        NavigationView {
             List {
-                Section(header: Text("Category")) {
-                    Picker("Category", selection: $selectedCategory) {
+                Section() {
+                    Picker("Categories", selection: $selectedCategory) {
                         ForEach(mainMenu.allCategories(), id: \.self) {
                             Text($0)
                         }
                     }.pickerStyle(.inline)
                 }
             }
-            Button("Create Item") {
-                subCategory.category = selectedCategory
-                let newSubCategory = subCategory
-                didAddSubCategory(newSubCategory)
+            .navigationTitle("Assign Category")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        let newSubCategory = subCategory
+                        didAddSubCategory(newSubCategory)
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Confirm") {
+                        subCategory.category = selectedCategory
+                        let newSubCategory = subCategory
+                        didAddSubCategory(newSubCategory)
+                    }
+                    
+                }
             }
+
+
+        }
+
+        .onAppear {
+            selectedCategory = subCategory.category
         }
         
     }

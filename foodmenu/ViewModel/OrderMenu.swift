@@ -17,7 +17,7 @@ struct MainCategory: Hashable, Identifiable{
 struct SubCat: Hashable, Identifiable{
     var id = UUID()
     var name: String
-    var color: Color = .white
+    var color: Color = .orange
     var category: String
     var image: Image {
         Image(name)
@@ -30,6 +30,7 @@ struct CatItem: Hashable, Identifiable{
     var name: String
     var description: String
     var price = 0.0
+    var inStock: Bool = true
     var image: Image {
         Image(name)
     }
@@ -75,7 +76,8 @@ class OrderMenu: ObservableObject {
         items.append(CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99))
         items.append(CatItem(subcategory: "itlog", name: "omelette2", description: "Itlog na gi batil, tas gi prito? na may gulay gamay na gi roll", price: 5.99))
         items.append(CatItem(subcategory: "itlog", name: "omelette3", description: "Itlog na gi batil, tas gi prito?", price: 3.99))
-        items.append(CatItem(subcategory: "talong", name: "talong", description: "Talong na may itlog", price: 125.99))
+        items.append(CatItem(subcategory: "talong", name: "talong", description: "Talong na may itlog", price: 125.99,
+                             inStock: false))
         
         items.append(CatItem(subcategory: "soda", name: "Coke", description: "Itom na tubig", price: 5.99))
         items.append(CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99))

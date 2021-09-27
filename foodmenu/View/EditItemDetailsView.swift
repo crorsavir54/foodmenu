@@ -12,7 +12,8 @@ struct EditItemDetailsView: View {
     @Binding var item: CatItem
     var didAddItem: (_ item: CatItem) -> Void
     @State private var selectedSubCategory = ""
-//    @State private var selectedCategory = ""
+    @State private var selectedStockStatus = true
+    //    @State private var selectedCategory = ""
     
     let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -28,11 +29,13 @@ struct EditItemDetailsView: View {
                 }
                 Section(header: Text("Item Price")) {
                     TextField("Price", value: $item.price, formatter: formatter)
+                        .keyboardType(.decimalPad)
                 }
                 Section(header: Text("Item Description")) {
                     TextField("description", text: $item.description)
                 }
             }
+            Toggle("In Stock?", isOn: $item.inStock)
             List {
                 Section {
                     Picker("SubCategory", selection: $selectedSubCategory) {
@@ -42,15 +45,34 @@ struct EditItemDetailsView: View {
                     }.pickerStyle(.inline)
                 }
             }
-            Button("Create Item") {
-                item.subcategory = selectedSubCategory
-                let newItem = item
-                didAddItem(newItem)
-                print("FROM EDIT ITEM VIEW: \(mainMenu.items)")
+            
+            HStack {
+                Spacer()
+                Button(action: {
+                    item.subcategory = selectedSubCategory
+                    let newItem = item
+                    didAddItem(newItem)
+                }, label: {
+                    Text("Confirm")
+                        .font(.system(size: 20))
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(width: UIScreen.main.bounds.size.width/3, height: 55, alignment: .center)
+                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
+                }).buttonStyle(GrowingButton())
+                    .padding()
+                    .clipped()
+                    .shadow(color: Color.black.opacity(0.15),
+                            radius: 3,
+                            x: 3,
+                            y: 3)
+                Spacer()
             }
         }.onAppear {
             selectedSubCategory = item.subcategory
+
         }
+
     }
 }
 

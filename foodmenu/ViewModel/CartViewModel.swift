@@ -32,6 +32,7 @@ class CartViewModel: ObservableObject {
 //                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99)]
     }
     
+    
     var total: Double {
         cart.items.lazy.map{ $0.price }.reduce(0.0,+)
     }
@@ -52,6 +53,7 @@ class CartViewModel: ObservableObject {
             cart.items.remove(at: index)
         }
     }
-    
-    
+    func clearCart() {
+        cart = Cart(items: [], note: "")
+    }
 }

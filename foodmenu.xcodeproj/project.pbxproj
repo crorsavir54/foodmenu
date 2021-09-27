@@ -21,6 +21,8 @@
 		D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */; };
 		D2CC7E9C26FDF9D1005E60CD /* EditItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */; };
 		D2CC7E9E26FE0005005E60CD /* EditMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */; };
+		D2E56E972701F48F0054EAE9 /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E56E962701F48F0054EAE9 /* Orders.swift */; };
+		D2E56E992701FEC20054EAE9 /* OrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E56E982701FEC20054EAE9 /* OrdersView.swift */; };
 		D2FDF5942700320A00B811F0 /* EditItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */; };
 		D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +44,8 @@
 		D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryView.swift; sourceTree = "<group>"; };
 		D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsView.swift; sourceTree = "<group>"; };
 		D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuView.swift; sourceTree = "<group>"; };
+		D2E56E962701F48F0054EAE9 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
+		D2E56E982701FEC20054EAE9 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
 		D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemDetailsView.swift; sourceTree = "<group>"; };
 		D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +66,7 @@
 			children = (
 				D27A30E726FDA84D00FF3170 /* OrderMenu.swift */,
 				D2298B3626FF0E8F00D82FA0 /* CartViewModel.swift */,
+				D2E56E962701F48F0054EAE9 /* Orders.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -77,6 +82,8 @@
 			isa = PBXGroup;
 			children = (
 				D2BAB2B226F32E7400B8961A /* MainFoodMenu.swift */,
+				D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */,
+				D2E56E982701FEC20054EAE9 /* OrdersView.swift */,
 				D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */,
 				D2CC7E9526FDEB4F005E60CD /* EditCategoryView.swift */,
 				D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */,
@@ -84,7 +91,6 @@
 				D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */,
 				D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */,
 				D200AA6C26F444AF00EFADE7 /* SubCategoryCardView.swift */,
-				D2331AFB26F9A59A0011DDE2 /* MenuItem.swift */,
 				D217042926FC34DD00056BEC /* CartView.swift */,
 			);
 			path = View;
@@ -203,10 +209,12 @@
 				D2CC7E9C26FDF9D1005E60CD /* EditItemsView.swift in Sources */,
 				D2298B3726FF0E8F00D82FA0 /* CartViewModel.swift in Sources */,
 				D2BAB2B326F32E7400B8961A /* MainFoodMenu.swift in Sources */,
+				D2E56E992701FEC20054EAE9 /* OrdersView.swift in Sources */,
 				D27A30E826FDA84D00FF3170 /* OrderMenu.swift in Sources */,
 				D2CC7E9626FDEB4F005E60CD /* EditCategoryView.swift in Sources */,
 				D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */,
 				D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */,
+				D2E56E972701F48F0054EAE9 /* Orders.swift in Sources */,
 				D2BAB2B126F32E7400B8961A /* foodmenuApp.swift in Sources */,
 				D2331AFC26F9A59A0011DDE2 /* MenuItem.swift in Sources */,
 				D2CC7E9E26FE0005005E60CD /* EditMenuView.swift in Sources */,

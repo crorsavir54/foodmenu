@@ -13,6 +13,7 @@ struct EditCategoryView: View {
     @State var selectedCategory: MainCategory = MainCategory(name: "Main", icon: "🍽")
     @State var selectedCategoryEdited: MainCategory = MainCategory(name: "Main", icon: "🍽")
     @State var isCategoryDetailPresented = false
+    @State var editMode: EditMode = .inactive
     @State private var newCategory = ""
     @State private var newCategoryIcon = ""
     
@@ -20,6 +21,22 @@ struct EditCategoryView: View {
     var body: some View {
         List {
             Section(header: Text("Main Categories")) {
+                HStack {
+                    TextField("New Category Name", text: $newCategory)
+                    Divider()
+                    TextField("Icon", text: $newCategoryIcon)
+                    
+                    Button(action: {
+                        withAnimation {
+                            mainCategories.insertCategory(category: MainCategory(name: newCategory, icon: newCategoryIcon))
+                            newCategory = ""
+                        }
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .accessibilityLabel(Text("Add category"))
+                    }
+                    .disabled(newCategory.isEmpty||newCategoryIcon.isEmpty)
+                }
                 ForEach(mainCategories.categories, id:\.self) { category in
                     HStack {
                         Text(category.name)
@@ -31,32 +48,27 @@ struct EditCategoryView: View {
                     }
                 }.onDelete { indices in
                     mainCategories.categories.remove(atOffsets: indices)
+                    
                 }
-                HStack {
-                    TextField("New Category Name", text: $newCategory)
-                    Divider()
-                    TextField("Icon", text: $newCategoryIcon)
-//                    TextField("New Categoty Icon", text: $newCategory)
-                    Button(action: {
-                        withAnimation {
-                            mainCategories.insertCategory(category: MainCategory(name: newCategory, icon: newCategoryIcon))
-//                            mainCategories..append(newCategory)
-                            newCategory = ""
-                        }
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .accessibilityLabel(Text("Add category"))
-                    }
-                    .disabled(newCategory.isEmpty||newCategoryIcon.isEmpty)
-                }
+                
+
             }
-            .listStyle(InsetGroupedListStyle())
+            Section(header: Text("Sub Categories")) {
+                EditSubCategoryView(mainMenu: mainCategories, editMode: $editMode)
             }
-//            .sheet(isPresented: $isCategoryDetailPresented, onDismiss: didDismiss) {
-////            EditCategoryDetailView(category: $selectedCategoryEdited)
+            
         }
+        .toolbar {
+            ToolbarItem{EditButton()}
+        }
+        .environment(\.editMode, $editMode)
+        .listStyle(.sidebar)
+        
+        //            .sheet(isPresented: $isCategoryDetailPresented, onDismiss: didDismiss) {
+        ////            EditCategoryDetailView(category: $selectedCategoryEdited)
     }
-    
+}
+
 //    func didDismiss() {
 //        if selectedCategory != selectedCategoryEdited {
 //            mainCategories.insertCategory(category: selectedCategoryEdited)
