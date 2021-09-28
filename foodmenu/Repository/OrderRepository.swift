@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import FirebaseFirestoreSwift
 import FirebaseFirestore
+import Firebase
 
 final class OrderRepository: ObservableObject {
     private let store = Firestore.firestore()
@@ -21,7 +22,10 @@ final class OrderRepository: ObservableObject {
         get()
     }
     func get() {
-        store.collection(path).addSnapshotListener { (snapshot, error) in
+        let userId = Auth.auth().currentUser?.uid
+        store.collection(path)
+            .whereField("userId", isEqualTo: userId!)
+            .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print(error)
                 return
@@ -34,7 +38,9 @@ final class OrderRepository: ObservableObject {
 
     func add(_ order: Order) {
         do {
-            _ = try store.collection(path).addDocument(from: order)
+            var addedOrder = order
+            addedOrder.userId = Auth.auth().currentUser?.uid
+            _ = try store.collection(path).addDocument(from: addedOrder)
         } catch {
             fatalError("Adding order failed")
         }

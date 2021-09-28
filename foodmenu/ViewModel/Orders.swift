@@ -14,17 +14,20 @@ struct Cart: Hashable, Identifiable, Codable {
     @DocumentID var id: String?
     var items: [CatItem]
     var note: String
+    var userId: String?
     
     init(items: [CatItem], note: String) {
         self.items = items
         self.note = note
     }
+    
 }
 
 struct Order: Hashable, Identifiable, Codable {
     @DocumentID var id: String?
     var order: Cart
     var status: OrderStatus
+    var userId: String?
 }
 enum OrderStatus: String, Codable {
     case pending

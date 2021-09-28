@@ -75,7 +75,6 @@ struct OrderInfo: View {
                             withAnimation {
                                 orderViewModel.changeOrderStatus(order: order, status: .pending)
                             }
-                            
                         }, label: {
                             Text("Move to pending")
                         }).buttonStyle(GrowingButton())
@@ -96,9 +95,7 @@ struct OrderInfo: View {
                         Button(action: {
                             withAnimation {
                                 orderViewModel.changeOrderStatus(order: order, status: .pending)
-                                
                             }
-                            
                         }, label: {
                             Text("Move to pending")
                         }).buttonStyle(GrowingButton())
@@ -106,7 +103,6 @@ struct OrderInfo: View {
                             withAnimation {
                                 orderViewModel.changeOrderStatus(order: order, status: .fullfilled)
                             }
-                            
                         }, label: {
                             Text("completed")
                         }).buttonStyle(GrowingButton())

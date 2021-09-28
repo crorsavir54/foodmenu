@@ -17,12 +17,15 @@ struct EditCategoryView: View {
     @State private var newCategory = ""
     @State private var newCategoryIcon = ""
     
+    func move(from source: IndexSet, to destination: Int) {
+        mainCategories.categories.move(fromOffsets: source, toOffset: destination)
+    }
     
     var body: some View {
         List {
             Section(header: Text("Main Categories")) {
                 HStack {
-                    TextField("New Category Name", text: $newCategory)
+                    TextField("Category Name", text: $newCategory)
                     Divider()
                     TextField("Icon", text: $newCategoryIcon)
                     
@@ -35,7 +38,8 @@ struct EditCategoryView: View {
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .accessibilityLabel(Text("Add category"))
-                    }.buttonStyle(GrowingButton())
+                    }.foregroundColor(.orange)
+                    .buttonStyle(GrowingButton())
                     .disabled(newCategory.isEmpty||newCategoryIcon.isEmpty)
                 }
                 ForEach(mainCategories.categories, id:\.self) { category in
@@ -48,6 +52,7 @@ struct EditCategoryView: View {
                         isCategoryDetailPresented.toggle()
                     }
                 }
+                .onMove(perform: move)
                 .onDelete { indices in
                     mainCategories.categories.remove(atOffsets: indices)
                     mainCategories.deleteCategory()

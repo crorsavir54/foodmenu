@@ -8,6 +8,7 @@
 import Combine
 import FirebaseFirestoreSwift
 import FirebaseFirestore
+import Firebase
 
 final class CategoryRepository: ObservableObject {
     private let store = Firestore.firestore()
@@ -19,7 +20,11 @@ final class CategoryRepository: ObservableObject {
         get()
     }
     func get() {
-        store.collection(path).addSnapshotListener { (snapshot, error) in
+        let userId = Auth.auth().currentUser?.uid
+        
+        store.collection(path)
+            .whereField("userId", isEqualTo: userId!)
+            .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print(error)
                 return
@@ -32,7 +37,9 @@ final class CategoryRepository: ObservableObject {
     
     func add(_ category: MainCategory) {
         do {
-            _ = try store.collection(path).addDocument(from: category)
+            var addedCategory = category
+            addedCategory.userId = Auth.auth().currentUser?.uid
+            _ = try store.collection(path).addDocument(from: addedCategory)
         } catch {
             fatalError("Adding category failed")
         }
@@ -56,7 +63,4 @@ final class CategoryRepository: ObservableObject {
             fatalError("Updating category failed")
         }
     }
-    
-    
-    
 }

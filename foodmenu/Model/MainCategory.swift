@@ -11,4 +11,5 @@ struct MainCategory: Hashable, Identifiable, Codable{
     @DocumentID var id: String?
     var name: String
     var icon: String = ""
+    var userId: String?
 }

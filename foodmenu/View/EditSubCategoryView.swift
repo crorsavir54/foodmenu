@@ -13,6 +13,9 @@ struct EditSubCategoryView: View {
     @State private var newSubCategory = ""
     @State var editSubCategotyDetails = false
     @State var selectedSubCategory = SubCat(name: "", category: "")
+    func move(from source: IndexSet, to destination: Int) {
+        mainMenu.subCategories.move(fromOffsets: source, toOffset: destination)
+    }
     
     var body: some View {
         
@@ -28,6 +31,8 @@ struct EditSubCategoryView: View {
                 Image(systemName: "plus.circle.fill")
                     .accessibilityLabel(Text("Add category"))
             }
+            .buttonStyle(GrowingButton())
+            .foregroundColor(.orange)
             .disabled(newSubCategory.isEmpty)
         }
             ForEach(mainMenu.subCategories, id:\.self) { subcategory in
@@ -58,9 +63,12 @@ struct EditSubCategoryView: View {
                     .disabled(editMode == .inactive)
                 }
                 
-            }.onDelete { indices in
+            }
+            .onMove(perform: move)
+            .onDelete { indices in
                 mainMenu.subCategories.remove(atOffsets: indices)
                 mainMenu.deleteSubCategory()
+                    
             }
 
             //                    }
