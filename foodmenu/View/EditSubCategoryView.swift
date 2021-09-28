@@ -34,9 +34,12 @@ struct EditSubCategoryView: View {
 
                 HStack {
                     Text(subcategory.name)
-                        .padding(.leading)
                     if subcategory.category.isEmpty {
                         Text("No category assigned")
+                            .font(.caption2)
+                            .fontWeight(.light)
+                    } else {
+                        Text(subcategory.category)
                             .font(.caption2)
                             .fontWeight(.light)
                     }
@@ -57,6 +60,7 @@ struct EditSubCategoryView: View {
                 
             }.onDelete { indices in
                 mainMenu.subCategories.remove(atOffsets: indices)
+                mainMenu.deleteSubCategory()
             }
 
             //                    }
@@ -64,8 +68,6 @@ struct EditSubCategoryView: View {
             EditSubCategoryDetailsView(mainMenu: mainMenu, subCategory: $selectedSubCategory) { addedSubCategory in
                 mainMenu.insertSubCategory(subCategory: addedSubCategory)
                 editSubCategotyDetails.toggle()
-                print("added subcategory id is: \(addedSubCategory.id)")
-                print("selected subcategory id is: \(selectedSubCategory.id)")
             }
         }
         .environment(\.editMode, $editMode)

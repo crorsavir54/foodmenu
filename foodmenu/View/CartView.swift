@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     @ObservedObject var cartView: CartViewModel
     @ObservedObject var orderViewModel: Orders
+    @Environment(\.presentationMode) var presentationMode
     
     @State var itemNumber = 1.0
     
@@ -36,12 +37,12 @@ struct CartView: View {
                     Text("My Cart")
                         .fontWeight(.bold)
                         .font(.largeTitle)
-                    ForEach(cartView.cart.items.unique(), id:\.self) { item in
+                    ForEach(cartView.cart.items.removingDuplicates(), id:\.self) { item in
                         HStack {
-                            Image(item.name)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100, alignment: .leading)
+//                            Image(item.name)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 100, height: 100, alignment: .leading)
                             VStack(alignment: .leading) {
                                 Text("\(item.name) x \(cartView.itemNumber(item: item), specifier: "%.0f")")
                                     .font(.body)
@@ -75,8 +76,13 @@ struct CartView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    orderViewModel.addOrder(order: Order(order: cartView.cart, status: .pending))
-                    cartView.clearCart()
+                    withAnimation(.easeInOut) {
+                        orderViewModel.addOrder(order: Order(order: cartView.cart, status: .pending))
+                        cartView.clearCart()
+                        presentationMode.wrappedValue.dismiss()
+                        
+                    }
+
                 }, label: {
                     Text("Order")
                         .font(.system(size: 30))

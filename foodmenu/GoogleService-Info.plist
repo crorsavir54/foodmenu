@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>246566467550-cu6qjgnaffrjncbdakqhmc09a6eip708.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.246566467550-cu6qjgnaffrjncbdakqhmc09a6eip708</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDTGVe4QuI2PejQB-RDPZ43OxzehM4MNYU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>246566467550</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>carlos.foodmenu.iOS</string>
+	<key>PROJECT_ID</key>
+	<string>foodmenu-86f0b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>foodmenu-86f0b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:246566467550:ios:8be3b2cc392f2c4c8b8f4f</string>
+</dict>
+</plist>

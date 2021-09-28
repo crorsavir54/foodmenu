@@ -1,0 +1,64 @@
+//
+//  ItemRepository.swift
+//  foodmenu
+//
+//  Created by coriv🧑🏻‍💻 on 9/28/21.
+//
+
+import Foundation
+
+import Combine
+import FirebaseFirestoreSwift
+import FirebaseFirestore
+
+final class ItemRepository: ObservableObject {
+    private let store = Firestore.firestore()
+    private let path = "items"
+
+    @Published var items = [CatItem]()
+
+    init() {
+        get()
+    }
+    func get() {
+        store.collection(path).addSnapshotListener { (snapshot, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            self.items = snapshot?.documents.compactMap {
+                try? $0.data(as: CatItem.self)
+            } ?? []
+        }
+    }
+
+    func add(_ item: CatItem) {
+        do {
+            _ = try store.collection(path).addDocument(from: item)
+        } catch {
+            fatalError("Adding item failed")
+        }
+    }
+
+    func remove(_ item: CatItem) {
+        guard let documentId = item.id else { return }
+        store.collection(path).document(documentId).delete { error in
+            if let error = error {
+                print("Unable to remove item : \(error.localizedDescription)")
+            }
+
+        }
+    }
+
+    func update(_ item: CatItem) {
+        guard let documentId = item.id else { return }
+        do {
+            _ = try store.collection(path).document(documentId).setData(from: item)
+        } catch {
+            fatalError("Updating item failed")
+        }
+    }
+
+
+
+}

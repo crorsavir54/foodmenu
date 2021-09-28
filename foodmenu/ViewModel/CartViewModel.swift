@@ -7,17 +7,7 @@
 
 import Foundation
 
-struct Cart: Hashable, Identifiable {
-    var id: UUID
-    var items: [CatItem]
-    var note: String
-    
-    init(id: UUID = UUID(),items: [CatItem], note: String) {
-        self.id = id
-        self.items = items
-        self.note = note
-    }
-}
+
 
 class CartViewModel: ObservableObject {
     
@@ -31,7 +21,6 @@ class CartViewModel: ObservableObject {
 //                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99),
 //                           CatItem(subcategory: "soda", name: "Sprite", description: "Tubig na may bura-bura", price: 5.99)]
     }
-    
     
     var total: Double {
         cart.items.lazy.map{ $0.price }.reduce(0.0,+)

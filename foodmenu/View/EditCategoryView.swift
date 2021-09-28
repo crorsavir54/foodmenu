@@ -30,11 +30,12 @@ struct EditCategoryView: View {
                         withAnimation {
                             mainCategories.insertCategory(category: MainCategory(name: newCategory, icon: newCategoryIcon))
                             newCategory = ""
+                            newCategoryIcon = ""
                         }
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .accessibilityLabel(Text("Add category"))
-                    }
+                    }.buttonStyle(GrowingButton())
                     .disabled(newCategory.isEmpty||newCategoryIcon.isEmpty)
                 }
                 ForEach(mainCategories.categories, id:\.self) { category in
@@ -46,9 +47,10 @@ struct EditCategoryView: View {
                         selectedCategory = category
                         isCategoryDetailPresented.toggle()
                     }
-                }.onDelete { indices in
+                }
+                .onDelete { indices in
                     mainCategories.categories.remove(atOffsets: indices)
-                    
+                    mainCategories.deleteCategory()
                 }
                 
 

@@ -14,8 +14,8 @@ struct mainFoodMenu: View {
     @ObservedObject var cart = CartViewModel(cart: Cart(items: [], note: ""))
     @ObservedObject var orderViewModel = Orders()
     @State var selectedCategory = MainCategory(name: "Main", icon: "🍽")
-    @State var subcategories: [SubCat] = [SubCat(name: "", color: .red, category: "")]
-    @State var selectedSubCategory = SubCat(name: "", color: .red, category: "")
+    @State var subcategories: [SubCat] = [SubCat(name: "", category: "")]
+    @State var selectedSubCategory = SubCat(name: "", category: "")
     @State var isSubcategoryPresented = false
     @State var isCartPresented = false
     @State var isEditModePresented = false
@@ -147,12 +147,20 @@ struct mainFoodMenu: View {
                                     .foregroundColor(.orange)
                                     .frame(width: UIScreen.main.bounds.size.width/2-40, height: 50)
                                 HStack {
-                                    Text("Order now")
-                                        .fontWeight(.semibold)
-                                    Image(systemName: "arrow.right")
+                                    if cart.cart.items.isEmpty {
+                                        Text("Cart empty")
+                                            .fontWeight(.semibold)
+                                    } else {
+                                        Text("Order now")
+                                            .fontWeight(.semibold)
+                                        Image(systemName: "arrow.right")
+                                    }
+
                                 }
                             }
-                        }.foregroundColor(.white)
+                        }
+                        
+                        .foregroundColor(.white)
                         //                            .offset(x: -20, y: 0)
                     }
                     .clipped()
@@ -192,11 +200,11 @@ struct mainFoodMenu: View {
                                 
                             }, label: {
                                 if UIDevice.current.userInterfaceIdiom == .pad {
-                                    SubCategoryCardView(subCategoryName: subcategory.name, cardColor: subcategory.color, image: subcategory.image)
+                                    SubCategoryCardView(subCategoryName: subcategory.name)
                                         .frame(minWidth: 0, maxWidth: .infinity)
                                         .frame(minHeight: 100, idealHeight: 350, maxHeight: 400)
                                 } else {
-                                    SubCategoryCardView(subCategoryName: subcategory.name, cardColor: subcategory.color,image: subcategory.image)
+                                    SubCategoryCardView(subCategoryName: subcategory.name)
                                         .frame(minWidth: 0, maxWidth: .infinity)
                                         .frame(minHeight: 50, idealHeight: 250, maxHeight: 300)
                                 }

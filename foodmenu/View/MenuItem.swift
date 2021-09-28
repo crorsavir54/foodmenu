@@ -74,12 +74,12 @@ struct MenuItem: View {
                                             .fill(Color.gray)
                                             .opacity(selectedItem.name == item.name ? 0.2 : 0)
                                             .frame(width: geometry.size.width/4.5, height: geometry.size.width/4.5)
-                                        
-                                        Image(item.name)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .padding()
-                                            .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
+                                        Text(item.name)
+//                                        Image(item.name)
+//                                            .resizable()
+//                                            .scaledToFit()
+//                                            .padding()
+//                                            .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
                                     }
                                     .onTapGesture {
                                         withAnimation(){
@@ -100,10 +100,10 @@ struct MenuItem: View {
                         Divider()
                         Spacer()
                         VStack(alignment: .leading, spacing: 4) {
-                            Image(selectedItem.name)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: geometry.size.width/2, height: geometry.size.width/2, alignment: .leading)
+//                            Image(selectedItem.name)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: geometry.size.width/2, height: geometry.size.width/2, alignment: .leading)
                             HStack {
                                 Text(selectedItem.name)
                                     .font(.largeTitle)
@@ -267,6 +267,6 @@ struct MenuItem: View {
 
 struct MenuItem_Previews: PreviewProvider {
     static var previews: some View {
-        MenuItem(items: OrderMenu(), cart: CartViewModel(cart: Cart(items: [], note: "")), orderViewModel: Orders(), subCategory: .constant(SubCat(name: "itlog", color: .yellow, category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99, inStock: false))
+        MenuItem(items: OrderMenu(), cart: CartViewModel(cart: Cart(items: [], note: "")), orderViewModel: Orders(), subCategory: .constant(SubCat(name: "itlog",category: "Breakfast")), selectedItem: CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99, inStock: false))
     }
 }

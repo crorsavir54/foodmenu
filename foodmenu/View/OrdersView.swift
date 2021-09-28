@@ -36,14 +36,14 @@ struct OrdersView: View {
 
 struct OrderInfo: View {
     @ObservedObject var orderViewModel: Orders
-    var status: Order.OrderStatus
+    var status: OrderStatus
     
     var body: some View {
         VStack(alignment:.leading) {
             ForEach(orderViewModel.orders.filter{$0.status == status}) { order in
-                Text("order id: \(order.id)")
+                Text("order id: \(order.id ?? "")")
                     .fontWeight(.bold)
-                ForEach(order.order.items.unique()) { items in
+                ForEach(order.order.items.removingDuplicates(), id:\.self) { items in
                     Text("\(items.name) x \(orderViewModel.itemNumber(order: order, item: items), specifier: "%.0f")")
                 }
                 if status == .pending {

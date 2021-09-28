@@ -19,10 +19,10 @@ struct EditItemsView: View {
             List {
                 ForEach(mainMenu.items, id:\.self) { item in
                     HStack {
-                        Image(item.name)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50, height: 50)
+//                        Image(item.name)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 50, height: 50)
                         VStack(alignment: .leading) {
                             HStack {
                                 Text(item.name)
@@ -66,6 +66,7 @@ struct EditItemsView: View {
                     }
                 }.onDelete { indices in
                     mainMenu.items.remove(atOffsets: indices)
+                    mainMenu.deleteItem()
                 }
                 
                 Button(action: {addNewitemDetailsPresented.toggle()}) {

@@ -6,72 +6,134 @@
 //
 import Foundation
 import SwiftUI
+import Combine
+import FirebaseFirestoreSwift
 
+//struct MainCategory: Hashable, Identifiable, Codable{
+//    @DocumentID var id: String?
+//    var name: String
+//    var icon: String = ""
+//}
 
-struct MainCategory: Hashable, Identifiable{
-    var id = UUID()
-    var name: String
-    var icon: String = ""
-}
-
-struct SubCat: Hashable, Identifiable{
-    var id = UUID()
-    var name: String
-    var color: Color = .orange
-    var category: String
-    var image: Image {
-        Image(name)
-    }
-}
-
-struct CatItem: Hashable, Identifiable{
-    var id = UUID()
+struct CatItem: Hashable, Identifiable, Codable{
+    @DocumentID var id: String?
     var subcategory: String = "none"
     var name: String
     var description: String
     var price = 0.0
     var inStock: Bool = true
-    var image: Image {
-        Image(name)
-    }
+//    var image: Image {
+//        Image(name)
+//    }
 }
 
 //struct subCategory
 
 class OrderMenu: ObservableObject {
     
-    @Published var categories = [MainCategory]() {
-        didSet {
-            if categories.isEmpty {
-                categories.append(MainCategory(name: "Main", icon: "🍽"))
-                categories.append(MainCategory(name: "Breakfast", icon: "🍳"))
-                categories.append(MainCategory(name: "Bevarage", icon: "🥤"))
-            }
+    @Published var categoryRepository = CategoryRepository()
+    @Published var categories = [MainCategory]()
+    private var cancellables: Set<AnyCancellable> = []
+    
+    func insertCategory(category: MainCategory) {
+        if categories.firstIndex(where: {$0.id == category.id}) != nil {
+            categoryRepository.update(category)
+        } else {
+            categoryRepository.add(category)
+        }
+    }
+    //    func deleteCategory(category: MainCategory) {
+    //        if let index = categories.firstIndex(of: category) {
+    //            categories.remove(at: index)
+    //            categoryRepository.remove(category)
+    //        }
+    //    }
+        
+    func deleteCategory() {
+        let deletedCategories = categories.difference(from: categoryRepository.mainCategories)
+        for category in deletedCategories {
+            categoryRepository.remove(category)
+        }
+
+    }
+    
+    
+    @Published var subCategoryRepository = SubCategoryRepository()
+    @Published var subCategories = [SubCat]()
+    private var subCategoryCancellables: Set<AnyCancellable> = []
+    
+    func insertSubCategory(subCategory: SubCat) {
+        if subCategories.firstIndex(where: {$0.id == subCategory.id}) != nil {
+            subCategoryRepository.update(subCategory)
+        } else {
+            subCategoryRepository.add(subCategory)
         }
     }
     
-    @Published var subCategories = [SubCat]()
+//    func insertSubCategory(subCategory: SubCat) {
+//        if let index = subCategories.firstIndex(where: {$0.id == subCategory.id}){
+//            subCategories[index] = subCategory
+//        } else {
+//            subCategories.append(subCategory)
+//        }
+//    }
+//
+    func deleteSubCategory() {
+        let deletedSubCategories = subCategories.difference(from: subCategoryRepository.subCategories)
+        for subcategory in deletedSubCategories {
+            subCategoryRepository.remove(subcategory)
+        }
+    }
     
+    @Published var itemRepository = ItemRepository()
     @Published var items = [CatItem]()
+    private var itemCancellables: Set<AnyCancellable> = []
+    
+    func insertItem(item: CatItem) {
+        if items.firstIndex(where: {$0.id == item.id}) != nil {
+            itemRepository.update(item)
+        } else {
+            itemRepository.add(item)
+        }
+    }
+    
+    func deleteItem() {
+        let deletedItems = items.difference(from: itemRepository.items)
+        for item in deletedItems {
+            itemRepository.remove(item)
+        }
+    }
+    
+
+
     
     init(){
+        categoryRepository.$mainCategories
+            .assign(to: \.categories, on: self)
+            .store(in: &cancellables)
+        subCategoryRepository.$subCategories
+            .assign(to: \.subCategories, on: self)
+            .store(in: &subCategoryCancellables)
+        itemRepository.$items
+            .assign(to: \.items, on: self)
+            .store(in: &itemCancellables)
         
         //Dummy Main Categories
-        categories.append(MainCategory(name: "Main", icon: "🍽"))
-        categories.append(MainCategory(name: "Breakfast", icon: "🍳"))
-        categories.append(MainCategory(name: "Beverage", icon: "🥤"))
+//        categories.append(MainCategory(name: "Main", icon: "🍽"))
+//        categories.append(MainCategory(name: "Breakfast", icon: "🍳"))
+//        categories.append(MainCategory(name: "Beverage", icon: "🥤"))
         
         //Dummy Sub Categories
-        subCategories.append(SubCat(name: "kaldereta", color: .red, category: "Main"))
-        subCategories.append(SubCat(name: "talong", color: .green, category: "Main"))
-        subCategories.append(SubCat(name: "kornbep", color: .blue, category: "Main"))
-        subCategories.append(SubCat(name: "itlog", color: .yellow, category: "Breakfast"))
-        subCategories.append(SubCat(name: "tosino", color: .yellow, category: "Breakfast"))
-        subCategories.append(SubCat(name: "soriso", color: .yellow, category: "Breakfast"))
-        subCategories.append(SubCat(name: "hatdog", color: .yellow, category: "Breakfast"))
-        subCategories.append(SubCat(name: "soda", color: .yellow, category: "Beverage"))
-        
-        
+//        subCategories.append(SubCat(name: "kaldereta", color: .red, category: "Main"))
+//        subCategories.append(SubCat(name: "talong", color: .green, category: "Main"))
+//        subCategories.append(SubCat(name: "kornbep", color: .blue, category: "Main"))
+//        subCategories.append(SubCat(name: "itlog", color: .yellow, category: "Breakfast"))
+//        subCategories.append(SubCat(name: "tosino", color: .yellow, category: "Breakfast"))
+//        subCategories.append(SubCat(name: "soriso", color: .yellow, category: "Breakfast"))
+//        subCategories.append(SubCat(name: "hatdog", color: .yellow, category: "Breakfast"))
+//        subCategories.append(SubCat(name: "soda", color: .yellow, category: "Beverage"))
+//
+//
         //Dummy Items
         items.append(CatItem(subcategory: "itlog", name: "omelette", description: "Itlog na gi batil, tas gi prito?", price: 9.99))
         items.append(CatItem(subcategory: "itlog", name: "omelette2", description: "Itlog na gi batil, tas gi prito? na may gulay gamay na gi roll", price: 5.99))
@@ -116,41 +178,11 @@ class OrderMenu: ObservableObject {
         return subCategories.filter{$0.category == category.name}
     }
     
-    func insertCategory(category: MainCategory) {
-        if let index = categories.firstIndex(of: category) {
-            categories[index] = category
-        } else {
-            categories.append(category)
-        }
-    }
+
     
-    func deleteCategory(category: MainCategory) {
-        if let index = categories.firstIndex(of: category) {
-            categories.remove(at: index)
-        }
-    }
+
     
-    func insertSubCategory(subCategory: SubCat) {
-        if let index = subCategories.firstIndex(where: {$0.id == subCategory.id}){
-            subCategories[index] = subCategory
-        } else {
-            subCategories.append(subCategory)
-        }
-    }
-    
-    func deleteCategory(subCategory: SubCat) {
-        if let index = subCategories.firstIndex(of: subCategory) {
-            subCategories.remove(at: index)
-        }
-    }
-    
-    func insertItem(item: CatItem) {
-        if let index = items.firstIndex(where: {$0.id == item.id}) {
-            items[index] = item
-        } else {
-            items.append(item)
-        }
-    }
+
     
     
 }
