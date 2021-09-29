@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct EditItemsView: View {
     @ObservedObject var mainMenu: OrderMenu
@@ -13,16 +14,17 @@ struct EditItemsView: View {
     @State var itemDetailsPresented = false
     @State var addNewitemDetailsPresented = false
     @State var selectedItem = CatItem(name: "", description: "")
+
     
     var body: some View {
         VStack {
             List {
                 ForEach(mainMenu.items, id:\.self) { item in
                     HStack {
-//                        Image(item.name)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 50, height: 50)
+                        AnimatedImage(url: URL(string: item.imageUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
                         VStack(alignment: .leading) {
                             HStack {
                                 Text(item.name)

@@ -200,11 +200,11 @@ struct mainFoodMenu: View {
                                 
                             }, label: {
                                 if UIDevice.current.userInterfaceIdiom == .pad {
-                                    SubCategoryCardView(subCategoryName: subcategory.name)
+                                    SubCategoryCardView(subCategoryName: subcategory.name, image: subcategory.imageUrl)
                                         .frame(minWidth: 0, maxWidth: .infinity)
                                         .frame(minHeight: 100, idealHeight: 350, maxHeight: 400)
                                 } else {
-                                    SubCategoryCardView(subCategoryName: subcategory.name)
+                                    SubCategoryCardView(subCategoryName: subcategory.name, image: subcategory.imageUrl)
                                         .frame(minWidth: 0, maxWidth: .infinity)
                                         .frame(minHeight: 50, idealHeight: 250, maxHeight: 300)
                                 }

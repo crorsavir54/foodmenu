@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct SubCategoryCardView: View {
     
+    
     var subCategoryName = "Main"
     var cardColor: Color = .orange
+    var image: String = ""
 //    var image: Image
     
     var body: some View {
@@ -19,13 +22,13 @@ struct SubCategoryCardView: View {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(cardColor.opacity(0.1))
                     .clipped()
-//                image
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: geometry.size.width, height: geometry.size.height)
-//                    .position(x:geometry.size.width/2, y:geometry.size.height/2 + 50)
-//                    .shadow(radius: 2)
-//                    .clipShape(RoundedRectangle(cornerRadius: 25))
+                AnimatedImage(url: URL(string: image))
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .position(x:geometry.size.width/2, y:geometry.size.height/2 + 50)
+                    .shadow(radius: 2)
+                    .clipShape(RoundedRectangle(cornerRadius: 25))
                 VStack {
                     HStack {
                         Text(subCategoryName)

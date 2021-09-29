@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MenuItem: View {
     @ObservedObject var items: OrderMenu
@@ -75,11 +76,11 @@ struct MenuItem: View {
                                             .opacity(selectedItem.name == item.name ? 0.2 : 0)
                                             .frame(width: geometry.size.width/4.5, height: geometry.size.width/4.5)
                                         Text(item.name)
-//                                        Image(item.name)
-//                                            .resizable()
-//                                            .scaledToFit()
-//                                            .padding()
-//                                            .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
+                                        AnimatedImage(url: URL(string: item.imageUrl))
+                                            .resizable()
+                                            .scaledToFit()
+                                            .padding()
+                                            .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
                                     }
                                     .onTapGesture {
                                         withAnimation(){
@@ -100,10 +101,10 @@ struct MenuItem: View {
                         Divider()
                         Spacer()
                         VStack(alignment: .leading, spacing: 4) {
-//                            Image(selectedItem.name)
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: geometry.size.width/2, height: geometry.size.width/2, alignment: .leading)
+                            AnimatedImage(url: URL(string: selectedItem.imageUrl))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geometry.size.width/2, height: geometry.size.width/2, alignment: .leading)
                             HStack {
                                 Text(selectedItem.name)
                                     .font(.largeTitle)

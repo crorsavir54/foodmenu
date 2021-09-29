@@ -10,12 +10,14 @@ import Foundation
 import Combine
 import FirebaseFirestoreSwift
 import FirebaseFirestore
+import FirebaseStorage
 import Firebase
+import SwiftUI
 
 final class SubCategoryRepository: ObservableObject {
     private let store = Firestore.firestore()
     private let path = "subcategories"
-
+    
     @Published var subCategories = [SubCat]()
 
     init() {
@@ -24,7 +26,7 @@ final class SubCategoryRepository: ObservableObject {
     func get() {
         let userId = Auth.auth().currentUser?.uid
         store.collection(path)
-            .whereField("userId", isEqualTo: userId!)
+            .whereField("userId", isEqualTo: userId)
             .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print(error)
@@ -38,6 +40,7 @@ final class SubCategoryRepository: ObservableObject {
 
     func add(_ subCategory: SubCat) {
         do {
+            
             var addedSubCategory = subCategory
             addedSubCategory.userId = Auth.auth().currentUser?.uid
             _ = try store.collection(path).addDocument(from: addedSubCategory)
@@ -45,6 +48,8 @@ final class SubCategoryRepository: ObservableObject {
             fatalError("Adding subcategory failed")
         }
     }
+    
+
 
     func remove(_ subCategory: SubCat) {
         guard let documentId = subCategory.id else { return }
