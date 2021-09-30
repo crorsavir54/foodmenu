@@ -9,6 +9,24 @@ import Foundation
 import Firebase
 
 class Authentication: ObservableObject {
+    @Published var userName = ""
+    func getUser() {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if let user = user {
+                if user.isAnonymous {
+                    self.userName = "AnonID: \(user.uid)"
+                } else {
+                    guard let email = user.email else {
+                        print("Can't get email")
+                        return
+                    }
+                    self.userName = email
+                }
+            } else {
+                print("No signed in user")
+            }
+        }
+    }
     
     func anonymousSignIn() {
         Auth.auth().signInAnonymously()

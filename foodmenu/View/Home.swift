@@ -12,6 +12,8 @@ struct Home: View {
     @State var show = false
     @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
     @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
+    @EnvironmentObject var auth: Authentication
+    
     var body: some View {
         VStack {
             VStack {
@@ -36,12 +38,15 @@ struct Home: View {
 //            .navigationBarHidden(true)
 //            .navigationBarBackButtonHidden(true)
             .onAppear {
+                
                 NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
                     (_) in
+                    auth.getUser()
                     self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
                 }
                 NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
                     (_) in
+                    auth.getUser()
                     self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
                 }
             }
@@ -51,6 +56,7 @@ struct Home: View {
 
 
 struct LoggedIn: View {
+    @EnvironmentObject var auth: Authentication
     func signOut() {
         let firebaseAuth = Auth.auth()
         do {
@@ -62,8 +68,6 @@ struct LoggedIn: View {
         NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
         UserDefaults.standard.set(false, forKey: "anonymousSignIn")
         NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-        
-        
         Auth.auth().signInAnonymously()
         UserDefaults.standard.set(true, forKey: "anonymousSignIn")
         UserDefaults.standard.set(false, forKey: "signIn")
@@ -73,7 +77,9 @@ struct LoggedIn: View {
     @Binding var show: Bool
     var body: some View {
         VStack {
-            Text("You are logged in")
+            Text("You are logged in as: ")
+            Text(auth.userName)
+                .fontWeight(.semibold)
             Button(action: {
                 signOut()
 //                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
@@ -87,11 +93,14 @@ struct LoggedIn: View {
             }).background(Color.red)
                 .cornerRadius(10)
                 .padding(.top, 25)
+        }.onAppear {
+            auth.getUser()
         }
     }
 }
 
 struct Login: View {
+    @EnvironmentObject var auth: Authentication
     @Binding var show: Bool
     @State var email = ""
     @State var pass = ""
@@ -100,6 +109,8 @@ struct Login: View {
     @State var error = ""
     @State var color = Color.black.opacity(0.7)
     @State var logInViewPresented = false
+    @State var isSignUpPresented = false
+    
     
     var body: some View {
         ZStack {
@@ -113,8 +124,11 @@ struct Login: View {
                                 .foregroundColor(self.color)
                                 .padding(.top, 35)
 //                                .padding(.horizontal, 20)
+                            
                             Spacer()
                         }
+                        Text("You are signed in as \(auth.userName). To store and retain your info, you can link it to an account")
+                            .font(.caption2)
                         TextField("Email", text: self.$email)
                             .autocapitalization(.none)
                             .padding()
@@ -150,16 +164,34 @@ struct Login: View {
                             }).background(Color.orange)
                                 .cornerRadius(10)
                                 .padding(.top, 25)
-                        Text("Already have an account?")
-                            .foregroundColor(.black.opacity(0.7))
-                            .onTapGesture {
-                                logInViewPresented.toggle()
-                            }
-                    }.sheet(isPresented: $logInViewPresented) {
+                        HStack {
+                            Button(action: {
+                                isSignUpPresented.toggle()
+                            }, label: {
+                                Text("Sign up")
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.red)
+                            })
+                            Text("Already have an account? Login")
+                                .foregroundColor(.black.opacity(0.7))
+                                .fontWeight(.semibold)
+                                .onTapGesture {
+                                    logInViewPresented.toggle()
+                                }
+                        }
+                    }.onAppear {
+                            auth.getUser()
+                        
+                    }
+                    .sheet(isPresented: $logInViewPresented) {
                         signInAnonymously(anonDisabled: true)
                     }
+                    .sheet(isPresented: $isSignUpPresented) {
+                        SignUpView()
+                    }
 
-                    }.padding(.horizontal, 25)
+
+                }.padding(.horizontal, 25)
                 }
             }
         }

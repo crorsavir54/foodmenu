@@ -10,7 +10,7 @@ import Firebase
 
 @main
 struct foodmenuApp: App {
-    
+    @StateObject var auth = Authentication()
     init() {
         FirebaseApp.configure()
     }
@@ -18,6 +18,7 @@ struct foodmenuApp: App {
     var body: some Scene {
         WindowGroup {
             onBoardScreen()
+                .environmentObject(auth)
         }
     }
 }

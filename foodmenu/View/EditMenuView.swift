@@ -27,8 +27,9 @@ struct EditMenuView: View {
                     Text("Orders")
                 }
                 NavigationLink (destination: Home()) {
-                    Image(systemName: "person.crop.circle.fill")
-                        .buttonStyle(PlainButtonStyle())
+                    Text("Account")
+//                    Image(systemName: "person.crop.circle.fill")
+//                        .buttonStyle(PlainButtonStyle())
                 }
             }
             .listStyle(.plain)

@@ -13,6 +13,7 @@ struct onBoardScreen: View {
     @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
     @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
     
+    
     var body: some View {
         VStack {
             VStack {
@@ -54,6 +55,7 @@ struct signInAnonymously: View {
     @State var error = ""
     @State var color = Color.black.opacity(0.7)
     @State var anonDisabled = false
+    @State var isSignUpPresented = false
     
     var body: some View {
         ZStack {
@@ -91,7 +93,13 @@ struct signInAnonymously: View {
                         .padding(.top, 25)
                         
                         HStack {
-                            Spacer()
+                            Button(action: {
+                                isSignUpPresented.toggle()
+                            }, label: {
+                                Text("Sign up")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.red)
+                            })
                             Button(action: {
 //                                self.reset()
                             }, label: {
@@ -112,9 +120,8 @@ struct signInAnonymously: View {
                             }).background(Color.orange)
                                 .cornerRadius(10)
                                 .padding(.top, 25)
-
                             if anonDisabled {
-                                Text("Changing account without linking your account will permanently remove all data associated with this anonymous account")
+                                Text("Changing account without linking it with an account will permanently remove all data associated with this anonymous account")
                                     .font(.caption2)
                                 Color.clear
                             } else {
@@ -124,7 +131,6 @@ struct signInAnonymously: View {
                                     UserDefaults.standard.set(false, forKey: "signIn")
                                     NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
                                     NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
-                                    
                                     print("Signed in anonymously")
                                 }, label: {
                                     Text("Log in anonymously")
@@ -141,12 +147,14 @@ struct signInAnonymously: View {
 
                     }.padding(.horizontal, 25)
                 }
+                .sheet(isPresented: $isSignUpPresented) {
+                    SignUpView()
             }
 //            if self.alert {
 //                ErrorView(alert: self.$alert, error: self.$error)
 //            }
         }
-        
+        }
     }
     
 //    func anonymousSignIn () {
@@ -177,8 +185,3 @@ struct signInAnonymously: View {
         }
     }
 }
-//struct SignInAnonymously_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SignInAnonymously()
-//    }
-//}
