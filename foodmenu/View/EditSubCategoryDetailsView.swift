@@ -84,7 +84,9 @@ struct EditSubCategoryDetailsView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Confirm") {
-                        upload(image: image)
+                        subCategory.category = selectedCategory
+                        let newSubCategory = subCategory
+                        didAddSubCategory(newSubCategory)
                     }
                     
                 }
@@ -101,6 +103,7 @@ struct EditSubCategoryDetailsView: View {
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true
+            upload(image: image)
         }
     }
     

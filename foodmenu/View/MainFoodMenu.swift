@@ -20,6 +20,7 @@ struct mainFoodMenu: View {
     @State var isCartPresented = false
     @State var isEditModePresented = false
     
+    
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -246,6 +247,6 @@ struct GrowingButton: ButtonStyle {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        mainFoodMenu()
+        mainFoodMenu(mainCategories: OrderMenu())
     }
 }

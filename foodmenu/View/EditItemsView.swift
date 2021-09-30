@@ -23,7 +23,8 @@ struct EditItemsView: View {
                     HStack {
                         AnimatedImage(url: URL(string: item.imageUrl))
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
                             .frame(width: 50, height: 50)
                         VStack(alignment: .leading) {
                             HStack {

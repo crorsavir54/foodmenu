@@ -12,6 +12,7 @@ struct EditMenuView: View {
     @ObservedObject var mainCategories: OrderMenu
     @ObservedObject var orderViewModel: Orders
     @Environment(\.presentationMode) var presentationMode
+    @State var showSigninForm = false
     
     var body: some View {
         NavigationView {
@@ -24,6 +25,10 @@ struct EditMenuView: View {
                 }
                 NavigationLink (destination: OrdersView(orderViewModel: orderViewModel)) {
                     Text("Orders")
+                }
+                NavigationLink (destination: Home()) {
+                    Image(systemName: "person.crop.circle.fill")
+                        .buttonStyle(PlainButtonStyle())
                 }
             }
             .listStyle(.plain)

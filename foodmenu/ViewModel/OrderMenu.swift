@@ -94,9 +94,25 @@ class OrderMenu: ObservableObject {
         }
     }
     
-
-
+    // Log in and Log out and reset view
+    func logOut() {
+        categories.removeAll()
+    }
     
+    func logIn() {
+        categories.removeAll()
+        categoryRepository.$mainCategories
+            .assign(to: \.categories, on: self)
+            .store(in: &cancellables)
+        subCategoryRepository.$subCategories
+            .assign(to: \.subCategories, on: self)
+            .store(in: &subCategoryCancellables)
+        itemRepository.$items
+            .assign(to: \.items, on: self)
+            .store(in: &itemCancellables)
+    }
+    
+
     init(){
         categoryRepository.$mainCategories
             .assign(to: \.categories, on: self)

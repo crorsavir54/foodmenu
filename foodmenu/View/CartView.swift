@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct CartView: View {
     @ObservedObject var cartView: CartViewModel
@@ -39,10 +40,11 @@ struct CartView: View {
                         .font(.largeTitle)
                     ForEach(cartView.cart.items.removingDuplicates(), id:\.self) { item in
                         HStack {
-//                            Image(item.name)
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: 100, height: 100, alignment: .leading)
+                            AnimatedImage(url: URL(string: item.imageUrl))
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                                .frame(width: 100, height: 100, alignment: .leading)
                             VStack(alignment: .leading) {
                                 Text("\(item.name) x \(cartView.itemNumber(item: item), specifier: "%.0f")")
                                     .font(.body)
@@ -80,9 +82,7 @@ struct CartView: View {
                         orderViewModel.addOrder(order: Order(order: cartView.cart, status: .pending))
                         cartView.clearCart()
                         presentationMode.wrappedValue.dismiss()
-                        
                     }
-
                 }, label: {
                     Text("Order")
                         .font(.system(size: 30))

@@ -38,8 +38,10 @@ struct EditCategoryView: View {
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .accessibilityLabel(Text("Add category"))
-                    }.foregroundColor(.orange)
+                            .font(.title2)
+                    }
                     .buttonStyle(GrowingButton())
+                    .foregroundColor(newCategory.isEmpty||newCategoryIcon.isEmpty ? .orange.opacity(0.5) : .orange)
                     .disabled(newCategory.isEmpty||newCategoryIcon.isEmpty)
                 }
                 ForEach(mainCategories.categories, id:\.self) { category in

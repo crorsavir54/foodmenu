@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Firebase
 
 struct MenuItem: View {
     @ObservedObject var items: OrderMenu
@@ -16,12 +17,18 @@ struct MenuItem: View {
     @State var selectedItem = CatItem(name: "", description: "")
     @State var tabNames = ["All", "New", "Popular", "New Items"]
     @Environment(\.presentationMode) var presentationMode
+//    @State var status = UserDefaults.standard.value(forKey: "signInAnonymously") as! Bool
 //    @State var cart = Cart.cart1
     
 //    func allItems() -> [CatItem] {
 //        return items.allItems(subCategory: subCategory)
 //    }
 //
+//    func anonymousSignIn () {
+//        Auth.auth().signInAnonymously()
+//        UserDefaults.standard.set(true, forKey: "anonymousSignIn")
+//        NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
+//    }
     let columns = [
         GridItem(.flexible(minimum: 40), spacing: 10)
     ]
@@ -31,7 +38,16 @@ struct MenuItem: View {
             if !items.allItems(subCategory: subCategory).isEmpty {
                 VStack {
                     HStack {
-                        Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                        Button(action: {
+//                            if status {
+//                                anonymousSignIn()
+//                            }
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            
+                            
+                            
+                        }, label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .strokeBorder(lineWidth: 0.5, antialiased: true)
@@ -78,7 +94,8 @@ struct MenuItem: View {
                                         Text(item.name)
                                         AnimatedImage(url: URL(string: item.imageUrl))
                                             .resizable()
-                                            .scaledToFit()
+                                            .scaledToFill()
+                                            .clipShape(RoundedRectangle(cornerRadius: 30))
                                             .padding()
                                             .frame(width: geometry.size.width/3.8, height: geometry.size.width/3.8, alignment: .leading)
                                     }
@@ -103,7 +120,8 @@ struct MenuItem: View {
                         VStack(alignment: .leading, spacing: 4) {
                             AnimatedImage(url: URL(string: selectedItem.imageUrl))
                                 .resizable()
-                                .scaledToFit()
+                                .scaledToFill()
+                                .clipShape(RoundedRectangle(cornerRadius: 50))
                                 .frame(width: geometry.size.width/2, height: geometry.size.width/2, alignment: .leading)
                             HStack {
                                 Text(selectedItem.name)

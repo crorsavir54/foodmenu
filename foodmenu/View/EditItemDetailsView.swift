@@ -20,6 +20,7 @@ struct EditItemDetailsView: View {
     @State private var imageBefore = UIImage()
     @State private var imageSet = false
     @State private var showSheet = false
+    @State private var buttonTappable = false
     //    @State private var selectedCategory = ""
     
     let formatter: NumberFormatter = {
@@ -30,28 +31,8 @@ struct EditItemDetailsView: View {
     
     var body: some View {
         VStack {
-            Form {
-                Section(header: Text("Item Name")) {
-                    TextField("Name", text: $item.name)
-                }
-                Section(header: Text("Item Price")) {
-                    TextField("Price", value: $item.price, formatter: formatter)
-                        .keyboardType(.decimalPad)
-                }
-                Section(header: Text("Item Description")) {
-                    TextField("description", text: $item.description)
-                }
-            }
-            Toggle("In Stock?", isOn: $item.inStock)
             List {
-                Section {
-                    Picker("SubCategory", selection: $selectedSubCategory) {
-                        ForEach(mainMenu.allSubCategories(), id: \.self) {
-                            Text($0)
-                        }
-                    }.pickerStyle(.inline)
-                }
-                Section() {
+//                Section(header: Text("Image")) {
                     HStack {
                         if imageSet {
                             Image(uiImage: self.image)
@@ -64,6 +45,7 @@ struct EditItemDetailsView: View {
                         } else {
                             AnimatedImage(url: URL(string: item.imageUrl))
                                 .resizable()
+                                .scaledToFill()
                                 .cornerRadius(50)
                                 .frame(width: 100, height: 100)
                                 .background(Color.black.opacity(0.2))
@@ -75,15 +57,15 @@ struct EditItemDetailsView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                            .cornerRadius(16)
+                            .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
                             .foregroundColor(.white)
                             .padding(.horizontal, 20)
+                            
                             .onTapGesture {
                                 showSheet = true
                                 imageBefore = image
                             }
-                    }
+                    }.listRowBackground(Color.clear)
                     .padding(.horizontal, 20)
                     .sheet(isPresented: $showSheet, onDismiss: compareImages) {
                         // Pick an image from the photo library:
@@ -91,13 +73,35 @@ struct EditItemDetailsView: View {
                         //  If you wish to take a photo from camera instead:
                         // ImagePicker(sourceType: .camera, selectedImage: self.$image)
                     }
+//                }
+                Section(header: Text("Stock Status")) {
+                    Toggle("In Stock?", isOn: $item.inStock)
+                }
+                Section(header: Text("Item Name")) {
+                    TextField("Name", text: $item.name)
+                }
+                Section(header: Text("Item Price")) {
+                    TextField("Price", value: $item.price, formatter: formatter)
+                        .keyboardType(.decimalPad)
+                }
+                Section(header: Text("Item Description")) {
+                    TextField("description", text: $item.description)
+                }
+                Section(header: Text("Category")) {
+                    Picker("SubCategory", selection: $selectedSubCategory) {
+                        ForEach(mainMenu.allSubCategories(), id: \.self) {
+                            Text($0)
+                        }
+                    }.pickerStyle(.inline)
+                        .labelsHidden()
                 }
             }
-            
             HStack {
                 Spacer()
                 Button(action: {
-                    upload(image: image)
+                    item.subcategory = selectedSubCategory
+                    let newItem = item
+                    didAddItem(newItem)
                 }, label: {
                     Text("Confirm")
                         .font(.system(size: 20))
@@ -105,7 +109,9 @@ struct EditItemDetailsView: View {
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.size.width/3, height: 55, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                }).buttonStyle(GrowingButton())
+                })
+                    .disabled(buttonTappable)
+                    .buttonStyle(GrowingButton())
                     .padding()
                     .clipped()
                     .shadow(color: Color.black.opacity(0.15),
@@ -124,6 +130,7 @@ struct EditItemDetailsView: View {
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true
+            upload(image: image)
         }
     }
     
@@ -134,6 +141,12 @@ struct EditItemDetailsView: View {
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         
+        if data != nil {
+            print("data ok")
+        } else {
+            print("data not ok")
+
+        }
         // Upload the file to the path "images/"
         let uploadTask = storageRef.putData(data!, metadata: metadata) { (metadata, error) in
             guard let metadata = metadata else {

@@ -13,12 +13,11 @@ struct foodmenuApp: App {
     
     init() {
         FirebaseApp.configure()
-        Auth.auth().signInAnonymously()
     }
     
     var body: some Scene {
         WindowGroup {
-            mainFoodMenu()
+            onBoardScreen()
         }
     }
 }

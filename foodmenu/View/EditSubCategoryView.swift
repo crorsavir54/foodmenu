@@ -20,7 +20,7 @@ struct EditSubCategoryView: View {
     var body: some View {
         
         HStack {
-            TextField("New SubCatery Name", text: $newSubCategory)
+            TextField("Subcategory Name", text: $newSubCategory)
             Button(action: {
                 withAnimation {
                     mainMenu.insertSubCategory(subCategory: SubCat(name: newSubCategory, category: ""))
@@ -29,11 +29,13 @@ struct EditSubCategoryView: View {
                 }
             }) {
                 Image(systemName: "plus.circle.fill")
+                    .font(.title2)
                     .accessibilityLabel(Text("Add category"))
             }
             .buttonStyle(GrowingButton())
-            .foregroundColor(.orange)
+            .foregroundColor(newSubCategory.isEmpty ? .orange.opacity(0.5) : .orange)
             .disabled(newSubCategory.isEmpty)
+            
         }
             ForEach(mainMenu.subCategories, id:\.self) { subcategory in
 
@@ -55,8 +57,7 @@ struct EditSubCategoryView: View {
                     }) {
                         Image(systemName: "pencil.circle.fill")
                             .font(.title2)
-                            .foregroundColor(editMode == .inactive ? Color.clear : .orange)
-
+                            .foregroundColor(editMode == .inactive ? .orange.opacity(0.5) : .orange)
                     }
                     .padding(.trailing)
                     .buttonStyle(GrowingButton())
