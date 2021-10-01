@@ -52,7 +52,7 @@ struct mainFoodMenu: View {
                                                                             .fontWeight(.bold)
                                                                             .foregroundColor(.white))
                                     .offset(x: 22, y: -10)
-                                Image("food")
+                                Image("cloche")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 40, height: 40)

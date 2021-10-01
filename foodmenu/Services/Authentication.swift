@@ -10,6 +10,9 @@ import Firebase
 
 class Authentication: ObservableObject {
     @Published var userName = ""
+    @Published var errorMessage = ""
+    
+    
     func getUser() {
         Auth.auth().addStateDidChangeListener { auth, user in
             if let user = user {
@@ -31,7 +34,10 @@ class Authentication: ObservableObject {
     func anonymousSignIn() {
         Auth.auth().signInAnonymously()
         UserDefaults.standard.set(true, forKey: "anonymousSignIn")
+        UserDefaults.standard.set(false, forKey: "signIn")
         NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
+        print("Signed in anonymously")
     }
     
     func verify(email: String, pass: String) {
@@ -45,34 +51,35 @@ class Authentication: ObservableObject {
                 return
             }
             print("success")
-            UserDefaults.standard.set(true, forKey: "status")
-            NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
+            UserDefaults.standard.set(false, forKey: "anonymousSignIn")
+            UserDefaults.standard.set(true, forKey: "signIn")
+            NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
+            
         })
         }
         else {
-            print("please fill properly")
+            print("error")
         }
     }
     
     func link(email: String, pass: String) {
-
         if email != "" && pass != "" {
-        let credential = EmailAuthProvider.credential(withEmail: email, password: pass)
-            
-            Auth.auth().currentUser?.link(with: credential) { (res, error) in
-                if error != nil {
-                    print("error \(error?.localizedDescription)")
+            let credential = EmailAuthProvider.credential(withEmail: email, password: pass)
+            Auth.auth().currentUser?.link(with: credential) { (res, err) in
+                if err != nil {
+                    print("Err: \(err?.localizedDescription)")
                     return
                 }
-
                 print("success linking account")
-                UserDefaults.standard.set(true, forKey: "status")
-                NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
+                UserDefaults.standard.set(true, forKey: "signIn")
+                NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
+                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
+                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
             }
         }
         else {
-            print("please fill properly")
+            print("Bad fields")
         }
     }
-    
 }

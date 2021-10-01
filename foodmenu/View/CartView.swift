@@ -23,11 +23,12 @@ struct CartView: View {
                     HStack(alignment: .center){
                         Spacer()
                         VStack(alignment: .center) {
-                            Image(systemName: "magnifyingglass")
-                                .font(.largeTitle)
-                                .foregroundColor(.orange)
-                            Text("Nothing Here")
-                            Text("Add items to your cart now")
+                            Image("none")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 350, height: 350)
+                            Text("It seems you have not selected anything from our menu. Select now, we are ready to serve you")
+                                .font(.caption)
                         }
                         Spacer()
                     }

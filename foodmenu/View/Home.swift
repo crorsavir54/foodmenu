@@ -23,33 +23,25 @@ struct Home: View {
                 if anonLoginStatus {
                     Login(show: $show) //link account
                 }
-
+                
                 if status == false && anonLoginStatus == false {
-//                    ZStack {
-//                        NavigationLink(destination: LoggedIn(show: self.$show), isActive: self.$show) {
-//                            Text("")
-//                        }
-//                    }
-//                    .hidden()
                     mainFoodMenu()
                 }
             }
         }
-//            .navigationBarHidden(true)
-//            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                
-                NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
-                    (_) in
-                    auth.getUser()
-                    self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
-                }
-                NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
-                    (_) in
-                    auth.getUser()
-                    self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
-                }
+        .onAppear {
+            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
+                (_) in
+                auth.getUser()
+                self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
             }
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
+                (_) in
+                auth.getUser()
+                self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
+            }
+        }
     }
 }
 
@@ -60,9 +52,9 @@ struct LoggedIn: View {
     func signOut() {
         let firebaseAuth = Auth.auth()
         do {
-          try firebaseAuth.signOut()
+            try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-          print("Error signing out: %@", signOutError)
+            print("Error signing out: %@", signOutError)
         }
         UserDefaults.standard.set(false, forKey: "signIn")
         NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
@@ -82,8 +74,8 @@ struct LoggedIn: View {
                 .fontWeight(.semibold)
             Button(action: {
                 signOut()
-//                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
-//                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
+                //                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
+                //                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
                 
             }, label: {
                 Text("Log out")
@@ -108,6 +100,7 @@ struct Login: View {
     @State var alert = false
     @State var error = ""
     @State var color = Color.black.opacity(0.7)
+    @State var mainColor = Color.orange.opacity(0.9)
     @State var logInViewPresented = false
     @State var isSignUpPresented = false
     
@@ -118,17 +111,19 @@ struct Login: View {
                 GeometryReader { _ in
                     VStack {
                         HStack {
-                            Text("Sign up and link an account")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(self.color)
-                                .padding(.top, 35)
-//                                .padding(.horizontal, 20)
-                            
+                            VStack(alignment: .leading) {
+                                Text("Sign up and link an account")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(self.color)
+                                    .padding(.top, 35)
+                                //                                .padding(.horizontal, 20)
+                                Text("You are signed in as \(auth.userName). To store and retain your info, you can link it to an account")
+                                    .font(.caption2)
+                            }
                             Spacer()
                         }
-                        Text("You are signed in as \(auth.userName). To store and retain your info, you can link it to an account")
-                            .font(.caption2)
+
                         TextField("Email", text: self.$email)
                             .autocapitalization(.none)
                             .padding()
@@ -145,42 +140,55 @@ struct Login: View {
                                 }
                             }
                             
-                            Button(action: {self.visible.toggle()} , label: {
-                                Image(systemName: self.visible ? "eye.slash.fill" : "eye.fill")
-                                    .foregroundColor(self.color)
+                            Button(action: {
+                                withAnimation(.easeInOut) {
+                                    visible.toggle()
+                                }
+                            } , label: {
+                                Image(systemName: visible ? "eye.slash.fill" : "eye.fill")
+                                    .foregroundColor(mainColor)
                             })
                         }
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 4).stroke(self.email != "" ? Color.red : self.color, lineWidth: 2))
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(self.email != "" ? mainColor : self.color, lineWidth: 2))
                         .padding(.top, 25)
-                            Button(action: {
-                                link()
-                                show.toggle()
-                            }, label: {
-                                Text("Link")
-                                    .foregroundColor(.white)
-                                    .padding(.vertical)
-                                    .frame(width: UIScreen.main.bounds.width-50)
-                            }).background(Color.orange)
-                                .cornerRadius(10)
-                                .padding(.top, 25)
-                        HStack {
-                            Button(action: {
-                                isSignUpPresented.toggle()
-                            }, label: {
-                                Text("Sign up")
+                        Button(action: {
+                            auth.link(email: email, pass: pass)
+                            show.toggle()
+                        }, label: {
+                            Text("Link")
+                                .foregroundColor(.white)
+                                .padding(.vertical)
+                                .frame(width: UIScreen.main.bounds.width-50)
+                        }).background(Color.orange)
+                            .cornerRadius(10)
+                            .padding(.top, 25)
+                        Spacer()
+                        VStack {
+//                            Button(action: {
+//                                isSignUpPresented.toggle()
+//                            }, label: {
+//                                HStack {
+//                                    Text("Want to sign up first before linking?")
+//                                        .foregroundColor(.black.opacity(0.7))
+//                                    Text("Sign up")
+//                                        .fontWeight(.semibold)
+//                                        .foregroundColor(.orange.opacity(0.7))
+//                                }
+//                            })
+                            HStack {
+                                Text("Already have an account?")
+                                    .foregroundColor(.black.opacity(0.7))
+                                Text("Login")
+                                    .foregroundColor(mainColor)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(.red)
-                            })
-                            Text("Already have an account? Login")
-                                .foregroundColor(.black.opacity(0.7))
-                                .fontWeight(.semibold)
-                                .onTapGesture {
-                                    logInViewPresented.toggle()
-                                }
+                                    .onTapGesture {
+                                        logInViewPresented.toggle()
+                                    }
+                            }
                         }
                     }.onAppear {
-                            auth.getUser()
+                        auth.getUser()
                         
                     }
                     .sheet(isPresented: $logInViewPresented) {
@@ -189,63 +197,11 @@ struct Login: View {
                     .sheet(isPresented: $isSignUpPresented) {
                         SignUpView()
                     }
-
-
+                    
+                    
                 }.padding(.horizontal, 25)
-                }
             }
         }
-    
-    func link() {
-        if self.email != "" && self.pass != "" {
-        let credential = EmailAuthProvider.credential(withEmail: self.email, password: self.pass)
-            
-            Auth.auth().currentUser?.link(with: credential) { (res, err) in
-                if err != nil {
-                    self.error = err!.localizedDescription
-                    self.alert.toggle()
-                    return
-                }
-                print("success linking account")
-
-
-                UserDefaults.standard.set(true, forKey: "signIn")
-                NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
-                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
-                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-            }
-        }
-        else {
-            self.error = "Please fill properly"
-        }
-    }
-    
-//    func verify() {
-//        if self.email != "" && self.pass != "" {
-//            //For login
-//        let credential = EmailAuthProvider.credential(withEmail: self.email, password: self.pass)
-//
-//        Auth.auth().signIn(with: credential, completion: { (authresult, error) in
-//            if error != nil {
-//                print("error \(error?.localizedDescription)")
-//                return
-//            }
-//            print("success")
-//            UserDefaults.standard.set(true, forKey: "status")
-//            NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
-//        })
-//        }
-//        else {
-//            self.error = "Please fill properly"
-//        }
-//    }
-}
-
-
-struct SignUp: View {
-    @Binding var show: Bool
-    var body: some View {
-        Text("SignUp")
     }
 }
 

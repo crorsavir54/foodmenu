@@ -112,7 +112,6 @@ class OrderMenu: ObservableObject {
             .store(in: &itemCancellables)
     }
     
-
     init(){
         categoryRepository.$mainCategories
             .assign(to: \.categories, on: self)

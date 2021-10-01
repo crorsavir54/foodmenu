@@ -44,7 +44,10 @@ struct SignUpView: View {
                                 }
                             }
                             
-                            Button(action: {self.visible.toggle()} , label: {
+                            Button(action: {
+                                withAnimation(.easeInOut) {
+                                    visible.toggle()
+                                }} , label: {
                                 Image(systemName: self.visible ? "eye.slash.fill" : "eye.fill")
                                     .foregroundColor(self.color)
                             })
@@ -54,7 +57,10 @@ struct SignUpView: View {
                         .padding(.top, 25)
                         VStack {
                             Button(action: {
-                                signUp()
+                                withAnimation {
+                                    signUp()
+                                }
+                                
                             }, label: {
                                 Text("Sign Up")
                                     .foregroundColor(.white)
