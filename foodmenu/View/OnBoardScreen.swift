@@ -65,13 +65,13 @@ struct signInAnonymously: View, KeyboardReadable {
                                 .resizable()
                                 .scaledToFit()
                                 .padding(.top, 10)
-                                .frame(width: 200, height: 200)
+                                .frame(width: 250, height: 250)
                         }
                         Text("Already have an account?")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(color)
-                            .padding(.top, 10)
+//                            .padding(.top, 10)
                         TextField("Email", text: $email)
                             .autocapitalization(.none)
                             .padding()
@@ -81,7 +81,6 @@ struct signInAnonymously: View, KeyboardReadable {
                                 withAnimation {
                                     isKeyboardVisible = keyboardVisible
                                 }
-                                
                             }
                         HStack(spacing: 15) {
                             VStack {
@@ -93,13 +92,10 @@ struct signInAnonymously: View, KeyboardReadable {
                                         .autocapitalization(.none)
                                 }
                             }
-                            
                             Button(action: {
                                 withAnimation(.easeInOut) {
                                     visible.toggle()
                                 }
-                                
-                                
                             } , label: {
                                 Image(systemName: visible ? "eye.slash.fill" : "eye.fill")
                                     .foregroundColor(mainColor)
@@ -108,7 +104,6 @@ struct signInAnonymously: View, KeyboardReadable {
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 4).stroke(email != "" ? mainColor: color, lineWidth: 2))
                         .padding(.top, 25)
-                        
                         HStack {
                             Spacer()
                             Button(action: {
@@ -137,7 +132,10 @@ struct signInAnonymously: View, KeyboardReadable {
                                 Color.clear
                             } else {
                                 Button(action: {
-                                    auth.anonymousSignIn()
+                                    withAnimation {
+                                        auth.anonymousSignIn()
+                                    }
+                                    
                                 }, label: {
                                     Text("Log in anonymously")
                                         .foregroundColor(.white)
@@ -153,7 +151,11 @@ struct signInAnonymously: View, KeyboardReadable {
                             Text("Don't have an account?")
                                 .foregroundColor(.black.opacity(0.7))
                             Button {
-                                isSignUpPresented.toggle()
+                                withAnimation {
+                                    isSignUpPresented.toggle()
+                                    
+                                }
+                                
                             } label: {
                                 Text("Sign up")
                                     .foregroundColor(mainColor)

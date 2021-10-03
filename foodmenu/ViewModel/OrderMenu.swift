@@ -9,20 +9,11 @@ import SwiftUI
 import Combine
 import FirebaseFirestoreSwift
 
-//struct MainCategory: Hashable, Identifiable, Codable{
-//    @DocumentID var id: String?
-//    var name: String
-//    var icon: String = ""
-//}
-
-
-
-//struct subCategory
-
 class OrderMenu: ObservableObject {
     
     @Published var categoryRepository = CategoryRepository()
     @Published var categories = [MainCategory]()
+    var initialSelection = CategoryRepository().selectedCategory
     private var cancellables: Set<AnyCancellable> = []
     
     func insertCategory(category: MainCategory) {
@@ -32,21 +23,15 @@ class OrderMenu: ObservableObject {
             categoryRepository.add(category)
         }
     }
-    //    func deleteCategory(category: MainCategory) {
-    //        if let index = categories.firstIndex(of: category) {
-    //            categories.remove(at: index)
-    //            categoryRepository.remove(category)
-    //        }
-    //    }
         
     func deleteCategory() {
         let deletedCategories = categories.difference(from: categoryRepository.mainCategories)
+        
         for category in deletedCategories {
             categoryRepository.remove(category)
         }
 
     }
-    
     
     @Published var subCategoryRepository = SubCategoryRepository()
     @Published var subCategories = [SubCat]()

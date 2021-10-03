@@ -41,11 +41,20 @@ struct CartView: View {
                         .font(.largeTitle)
                     ForEach(cartView.cart.items.removingDuplicates(), id:\.self) { item in
                         HStack {
-                            AnimatedImage(url: URL(string: item.imageUrl))
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(RoundedRectangle(cornerRadius: 30))
-                                .frame(width: 100, height: 100, alignment: .leading)
+                            if item.imageUrl != "" {
+                                AnimatedImage(url: URL(string: item.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                                    .frame(width: 100, height: 100, alignment: .leading)
+                            } else {
+                                Image("cloche")
+        //                            .padding(30)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                                    .frame(width: 100, height: 100, alignment: .leading)
+                            }
                             VStack(alignment: .leading) {
                                 Text("\(item.name) x \(cartView.itemNumber(item: item), specifier: "%.0f")")
                                     .font(.body)
@@ -90,8 +99,8 @@ struct CartView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(width: UIScreen.main.bounds.size.width/2, height: 55, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                }).buttonStyle(GrowingButton())
+//                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
+                }).buttonStyle(ConfirmButton())
                     .padding()
                     .clipped()
                     .shadow(color: Color.black.opacity(0.15),

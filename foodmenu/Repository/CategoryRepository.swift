@@ -15,6 +15,9 @@ final class CategoryRepository: ObservableObject {
     private let path = "categories"
     
     @Published var mainCategories = [MainCategory]()
+    var selectedCategory: MainCategory {
+        mainCategories.first ?? MainCategory(name: "")
+    }
     
     init() {
         get()
@@ -25,14 +28,17 @@ final class CategoryRepository: ObservableObject {
         store.collection(path)
             .whereField("userId", isEqualTo: userId)
             .addSnapshotListener { (snapshot, error) in
-            if let error = error {
-                print(error)
-                return
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
+                self.mainCategories = snapshot?.documents.compactMap {
+                    try? $0.data(as: MainCategory.self)
+                    
+                    
+                } ?? []
             }
-            self.mainCategories = snapshot?.documents.compactMap {
-                try? $0.data(as: MainCategory.self)
-            } ?? []
-        }
     }
     
     func add(_ category: MainCategory) {

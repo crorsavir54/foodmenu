@@ -14,6 +14,7 @@ struct EditItemDetailsView: View {
     @ObservedObject var mainMenu: OrderMenu
     @Binding var item: CatItem
     var didAddItem: (_ item: CatItem) -> Void
+    @Environment(\.presentationMode) private var presentationMode
     @State private var selectedSubCategory = ""
     @State private var selectedStockStatus = true
     @State private var image = UIImage()
@@ -30,97 +31,94 @@ struct EditItemDetailsView: View {
     }()
     
     var body: some View {
-        VStack {
-            List {
-//                Section(header: Text("Image")) {
-                    HStack {
-                        if imageSet {
-                            Image(uiImage: self.image)
-                                .resizable()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                        } else {
-                            AnimatedImage(url: URL(string: item.imageUrl))
-                                .resizable()
-                                .scaledToFill()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                        }
-
-                        Text("Change photo")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 20)
-                            
-                            .onTapGesture {
-                                showSheet = true
-                                imageBefore = image
+        NavigationView {
+            VStack {
+                List {
+    //                Section(header: Text("Image")) {
+                        HStack {
+                            if imageSet {
+                                Image(uiImage: self.image)
+                                    .resizable()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            } else {
+                                AnimatedImage(url: URL(string: item.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
                             }
-                    }.listRowBackground(Color.clear)
-                    .padding(.horizontal, 20)
-                    .sheet(isPresented: $showSheet, onDismiss: compareImages) {
-                        // Pick an image from the photo library:
-                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-                        //  If you wish to take a photo from camera instead:
-                        // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+
+                            Text("Change photo")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                
+                                .onTapGesture {
+                                    showSheet = true
+                                    imageBefore = image
+                                }
+                        }.listRowBackground(Color.clear)
+                        .padding(.horizontal, 20)
+
+    //                }
+                    Section(header: Text("Stock Status")) {
+                        Toggle("In Stock?", isOn: $item.inStock)
                     }
-//                }
-                Section(header: Text("Stock Status")) {
-                    Toggle("In Stock?", isOn: $item.inStock)
-                }
-                Section(header: Text("Item Name")) {
-                    TextField("Name", text: $item.name)
-                }
-                Section(header: Text("Item Price")) {
-                    TextField("Price", value: $item.price, formatter: formatter)
-                        .keyboardType(.decimalPad)
-                }
-                Section(header: Text("Item Description")) {
-                    TextField("description", text: $item.description)
-                }
-                Section(header: Text("Category")) {
-                    Picker("SubCategory", selection: $selectedSubCategory) {
-                        ForEach(mainMenu.allSubCategories(), id: \.self) {
-                            Text($0)
-                        }
-                    }.pickerStyle(.inline)
-                        .labelsHidden()
+                    Section(header: Text("Item Name")) {
+                        TextField("Name", text: $item.name)
+                    }
+                    Section(header: Text("Item Price")) {
+                        TextField("Price", value: $item.price, formatter: formatter)
+                            .keyboardType(.decimalPad)
+                    }
+                    Section(header: Text("Item Description")) {
+                        TextField("description", text: $item.description)
+                    }
+                    Section(header: Text("Category")) {
+                        Picker("SubCategory", selection: $selectedSubCategory) {
+                            ForEach(mainMenu.allSubCategories(), id: \.self) {
+                                Text($0)
+                            }
+                        }.pickerStyle(.inline)
+                            .labelsHidden()
+                    }
                 }
             }
-            HStack {
-                Spacer()
-                Button(action: {
+        }
+        .navigationTitle("Edit Item")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showSheet, onDismiss: compareImages) {
+            // Pick an image from the photo library:
+            ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+            //  If you wish to take a photo from camera instead:
+            // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+        }
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Dismiss") {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Confirm") {
                     item.subcategory = selectedSubCategory
                     let newItem = item
                     didAddItem(newItem)
-                }, label: {
-                    Text("Confirm")
-                        .font(.system(size: 20))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(width: UIScreen.main.bounds.size.width/3, height: 55, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                })
-                    .disabled(buttonTappable)
-                    .buttonStyle(GrowingButton())
-                    .padding()
-                    .clipped()
-                    .shadow(color: Color.black.opacity(0.15),
-                            radius: 3,
-                            x: 3,
-                            y: 3)
-                Spacer()
+                }
+                
             }
-        }.onAppear {
+        }
+        .onAppear {
             selectedSubCategory = item.subcategory
 
         }

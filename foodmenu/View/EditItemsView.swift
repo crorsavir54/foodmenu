@@ -14,6 +14,7 @@ struct EditItemsView: View {
     @State var itemDetailsPresented = false
     @State var addNewitemDetailsPresented = false
     @State var selectedItem = CatItem(name: "", description: "")
+    @State var newItem = CatItem(name: "", description: "")
 
     
     var body: some View {
@@ -73,11 +74,16 @@ struct EditItemsView: View {
                 }
                 
                 Button(action: {addNewitemDetailsPresented.toggle()}) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(.orange)
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.orange)
+                        Text("Add item")
+                        
+                    }.buttonStyle(GrowingButton())
+
                 }
-                .buttonStyle(GrowingButton())
+                
                 .padding()
             }
             
@@ -87,19 +93,21 @@ struct EditItemsView: View {
         }
         .environment(\.editMode, $editMode)
         
-        .sheet(isPresented: $addNewitemDetailsPresented) {
+        .sheet(isPresented: $itemDetailsPresented) {
             EditItemDetailsView(mainMenu: mainMenu, item: $selectedItem) {
                 addedItem in
                 mainMenu.insertItem(item: addedItem)
-                addNewitemDetailsPresented = false
+                itemDetailsPresented = false
+                
             }
         }
-        .sheet(isPresented: $itemDetailsPresented) {
-            EditItemDetailsView(mainMenu: mainMenu, item: $selectedItem) {
+        .sheet(isPresented: $addNewitemDetailsPresented) {
+            EditItemDetailsView(mainMenu: mainMenu, item: $newItem) {
                 updatedItem in
                 mainMenu.insertItem(item: updatedItem)
                 print(updatedItem)
-                itemDetailsPresented = false
+                addNewitemDetailsPresented = false
+                
             }
         }
         //        .environment(\.editMode, $editMode)

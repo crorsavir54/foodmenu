@@ -12,4 +12,5 @@ struct MainCategory: Hashable, Identifiable, Codable{
     var name: String
     var icon: String = ""
     var userId: String?
+//    var index: Int
 }

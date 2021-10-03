@@ -13,18 +13,17 @@ struct EditSubCategoryView: View {
     @State private var newSubCategory = ""
     @State var editSubCategotyDetails = false
     @State var selectedSubCategory = SubCat(name: "", category: "")
+    
     func move(from source: IndexSet, to destination: Int) {
         mainMenu.subCategories.move(fromOffsets: source, toOffset: destination)
     }
     
     var body: some View {
-        
         HStack {
             TextField("Subcategory Name", text: $newSubCategory)
             Button(action: {
                 withAnimation {
                     mainMenu.insertSubCategory(subCategory: SubCat(name: newSubCategory, category: ""))
-                    //                            mainCategories..append(newCategory)
                     newSubCategory = ""
                 }
             }) {
@@ -34,11 +33,8 @@ struct EditSubCategoryView: View {
             }
             .buttonStyle(GrowingButton())
             .foregroundColor(newSubCategory.isEmpty ? .orange.opacity(0.5) : .orange)
-            .disabled(newSubCategory.isEmpty)
-            
-        }
+            .disabled(newSubCategory.isEmpty)}
             ForEach(mainMenu.subCategories, id:\.self) { subcategory in
-
                 HStack {
                     Text(subcategory.name)
                     if subcategory.category.isEmpty {
@@ -63,16 +59,12 @@ struct EditSubCategoryView: View {
                     .buttonStyle(GrowingButton())
                     .disabled(editMode == .inactive)
                 }
-                
             }
             .onMove(perform: move)
             .onDelete { indices in
                 mainMenu.subCategories.remove(atOffsets: indices)
                 mainMenu.deleteSubCategory()
-                    
             }
-
-            //                    }
         .sheet(isPresented: $editSubCategotyDetails) {
             EditSubCategoryDetailsView(mainMenu: mainMenu, subCategory: $selectedSubCategory) { addedSubCategory in
                 mainMenu.insertSubCategory(subCategory: addedSubCategory)
@@ -80,7 +72,6 @@ struct EditSubCategoryView: View {
             }
         }
         .environment(\.editMode, $editMode)
-        
     }
 }
 

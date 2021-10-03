@@ -55,7 +55,7 @@ struct EditSubCategoryDetailsView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+                            .background(Color.orange)
                             .cornerRadius(16)
                             .foregroundColor(.white)
                             .padding(.horizontal, 20)
@@ -73,7 +73,7 @@ struct EditSubCategoryDetailsView: View {
                     }
                 }
             }
-            .navigationTitle("Assign Category")
+            .navigationTitle("Edit Subcategory")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -91,15 +91,11 @@ struct EditSubCategoryDetailsView: View {
                     
                 }
             }
-            
-            
         }
         .onAppear {
             selectedCategory = subCategory.category
         }
-        
     }
-    
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true

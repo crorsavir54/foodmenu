@@ -47,18 +47,19 @@ struct mainFoodMenu: View {
                         }, label: {
                             HStack{
                                 Circle()
-                                    .frame(width: 20, height: 20).overlay(Text("\(cart.cart.items.count)")
-                                                                            .font(UIDevice.current.userInterfaceIdiom == .pad ? .body : .caption)
-                                                                            .fontWeight(.bold)
-                                                                            .foregroundColor(.white))
+                                    .frame(width: 20, height: 20)
+                                    .overlay(Text("\(cart.cart.items.count)")
+                                                .font(UIDevice.current.userInterfaceIdiom == .pad ? .body : .caption)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.white))
                                     .offset(x: 22, y: -10)
                                 Image("cloche")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 40, height: 40)
-                                    .opacity(0.8)
+                                //                                    .opacity(0.8)
                                 //                                    .font(UIDevice.current.userInterfaceIdiom == .pad ? .largeTitle : .title
-
+                                
                                 //                                    .padding(.trailing)
                             }
                             //                            .padding(10)
@@ -98,7 +99,11 @@ struct mainFoodMenu: View {
                         })
                             .frame(minWidth: geometry.size.width, maxHeight: geometry.size.width/5+20 ,alignment: .leading)
                             .padding(.leading)
-                    } // Category Scroll View
+                    }
+                    .onAppear {
+                        selectedCategory = mainCategories.initialSelection
+                        print("ON APPEAR \(selectedCategory)")
+                    }// Category Scroll View
                     subCategory
                 }
                 .edgesIgnoringSafeArea([.bottom])
@@ -135,7 +140,7 @@ struct mainFoodMenu: View {
                                     Text("*Extra charges may apply")
                                         .fontWeight(.light)
                                         .font(.system(size: 10))
-                     
+                                    
                                 }.padding(.leading,30)
                             }
                         }.foregroundColor(.orange)
@@ -156,7 +161,7 @@ struct mainFoodMenu: View {
                                             .fontWeight(.semibold)
                                         Image(systemName: "arrow.right")
                                     }
-
+                                    
                                 }
                             }
                         }
@@ -228,22 +233,12 @@ struct mainFoodMenu: View {
                     EditMenuView(mainCategories: mainCategories, orderViewModel: orderViewModel)
                 }
             }
-            .onAppear {
-                print(mainCategories.items)
-            }
             .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
 
-struct GrowingButton: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 1.1 : 1)
-            .animation(.easeOut(duration: 0.3), value: configuration.isPressed)
-        
-    }
-}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

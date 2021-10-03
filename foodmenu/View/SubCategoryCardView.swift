@@ -23,11 +23,22 @@ struct SubCategoryCardView: View {
                     RoundedRectangle(cornerRadius: 30)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(.orange.opacity(0.1))
-                    AnimatedImage(url: URL(string: image))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                    if image != "" {
+                        AnimatedImage(url: URL(string: image))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                        
+                    } else {
+                        Image("cloche")
+//                            .padding(30)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: geometry.size.width-30, height: geometry.size.height)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                    }
+
                 }
 
                     
