@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>808809415323-ujk5115ikj6u7m6or4ct4rmh9mhgt772.apps.googleusercontent.com</string>
+	<string>491763707706-p0rbpo94i7298bgq9o2kkiokjqro6iv2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.808809415323-ujk5115ikj6u7m6or4ct4rmh9mhgt772</string>
+	<string>com.googleusercontent.apps.491763707706-p0rbpo94i7298bgq9o2kkiokjqro6iv2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBlJLsQ9_X0YTJfEUf3PFJ_E55XBueYjdE</string>
+	<string>AIzaSyAaT7dibwDzIyK3VczBq26-n2Cf_GzCB94</string>
 	<key>GCM_SENDER_ID</key>
-	<string>808809415323</string>
+	<string>491763707706</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>carlos.foodmenu.iOS</string>
+	<string>crotariv.foodmenu.iOS</string>
 	<key>PROJECT_ID</key>
-	<string>foodmenu-23834</string>
+	<string>foodmenu-50362</string>
 	<key>STORAGE_BUCKET</key>
-	<string>foodmenu-23834.appspot.com</string>
+	<string>foodmenu-50362.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:808809415323:ios:fe25a52b4d1febafd57c3e</string>
+	<string>1:491763707706:ios:82301cde317c0c439eaa03</string>
 </dict>
 </plist>

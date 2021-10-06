@@ -24,6 +24,9 @@ struct EditSubCategoryDetailsView: View {
     var body: some View {
         NavigationView {
             List {
+                Section(header: Text("Item Name")) {
+                    TextField("Name", text: $subCategory.name)
+                }
                 Section() {
                     Picker("Categories", selection: $selectedCategory) {
                         ForEach(mainMenu.allCategories(), id: \.self) {

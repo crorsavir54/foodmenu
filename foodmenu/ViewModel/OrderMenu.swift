@@ -72,6 +72,10 @@ class OrderMenu: ObservableObject {
         }
     }
     
+    func updateItemCategory(newName: String, oldName: String) {
+        itemRepository.updateSubcategoryName(newName: newName, subcategory: oldName)
+    }
+    
     func deleteItem() {
         let deletedItems = items.difference(from: itemRepository.items)
         for item in deletedItems {

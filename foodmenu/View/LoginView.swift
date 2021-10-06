@@ -1,95 +1,11 @@
 //
-//  Home.swift
+//  LoginView.swift
 //  foodmenu
 //
-//  Created by coriv🧑🏻‍💻 on 9/30/21.
+//  Created by coriv🧑🏻‍💻 on 10/6/21.
 //
 
 import SwiftUI
-import Firebase
-
-struct Home: View {
-    @State var show = false
-    @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
-    @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
-    @EnvironmentObject var auth: Authentication
-    
-    var body: some View {
-        VStack {
-            VStack {
-                if status {
-                    LoggedIn(show: $show) //signout
-                }
-                if anonLoginStatus {
-                    Login(show: $show) //link account
-                }
-                
-                if status == false && anonLoginStatus == false {
-                    mainFoodMenu()
-                }
-            }
-        }
-        .onAppear {
-            
-            NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
-                (_) in
-                auth.getUser()
-                self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
-            }
-            NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
-                (_) in
-                auth.getUser()
-                self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
-            }
-        }
-    }
-}
-
-
-
-struct LoggedIn: View {
-    @EnvironmentObject var auth: Authentication
-    func signOut() {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-        UserDefaults.standard.set(false, forKey: "signIn")
-        NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
-        UserDefaults.standard.set(false, forKey: "anonymousSignIn")
-        NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-        Auth.auth().signInAnonymously()
-        UserDefaults.standard.set(true, forKey: "anonymousSignIn")
-        UserDefaults.standard.set(false, forKey: "signIn")
-        NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
-    }
-    @Binding var show: Bool
-    var body: some View {
-        VStack {
-            Text("You are logged in as: ")
-            Text(auth.userName)
-                .fontWeight(.semibold)
-            Button(action: {
-                signOut()
-                //                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
-                //                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-                
-            }, label: {
-                Text("Log out")
-                    .foregroundColor(.white)
-                    .padding(.vertical)
-                    .frame(width: UIScreen.main.bounds.width-50)
-            }).background(Color.red)
-                .cornerRadius(10)
-                .padding(.top, 25)
-        }.onAppear {
-            auth.getUser()
-        }
-    }
-}
 
 struct Login: View {
     @EnvironmentObject var auth: Authentication
@@ -153,13 +69,18 @@ struct Login: View {
                         .background(RoundedRectangle(cornerRadius: 4).stroke(self.email != "" ? mainColor : self.color, lineWidth: 2))
                         .padding(.top, 25)
                         Button(action: {
+                            auth.status = .na
                             auth.link(email: email, pass: pass)
-                            show.toggle()
                         }, label: {
-                            Text("Link")
-                                .foregroundColor(.white)
-                                .padding(.vertical)
-                                .frame(width: UIScreen.main.bounds.width-50)
+                            if auth.status == .na {
+                                ProgressView()
+
+                            } else {
+                                Text("Link")
+                                    .foregroundColor(.white)
+                                    .padding(.vertical)
+                                    .frame(width: UIScreen.main.bounds.width-50)
+                            }
                         }).background(Color.orange)
                             .cornerRadius(10)
                             .padding(.top, 25)
@@ -197,6 +118,11 @@ struct Login: View {
                     .sheet(isPresented: $isSignUpPresented) {
                         SignUpView()
                     }
+                    .alert(isPresented: $auth.showAlert) {
+                        Alert(
+                            title: Text("Signup Error"),
+                            message: Text(auth.errorMessage))
+                    }
                     
                     
                 }.padding(.horizontal, 25)
@@ -204,9 +130,3 @@ struct Login: View {
         }
     }
 }
-
-//struct Home_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Home()
-//    }
-//}

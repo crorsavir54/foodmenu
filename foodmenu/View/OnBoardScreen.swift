@@ -12,17 +12,20 @@ struct onBoardScreen: View {
     @State var show = false
     @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
     @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
+    @EnvironmentObject var auth: Authentication
     
     
     var body: some View {
         VStack {
             VStack {
-                if status == true || anonLoginStatus == true {
+                if auth.loggedOut {
+                    signInAnonymously()
+                }
+                else if status == true || anonLoginStatus == true {
                     mainFoodMenu()
                 }
                 else {
                     signInAnonymously()
-                        .animation(.easeIn)
                 }
             }
         }.navigationTitle("")

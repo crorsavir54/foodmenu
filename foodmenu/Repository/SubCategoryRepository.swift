@@ -48,8 +48,6 @@ final class SubCategoryRepository: ObservableObject {
             fatalError("Adding subcategory failed")
         }
     }
-    
-
 
     func remove(_ subCategory: SubCat) {
         guard let documentId = subCategory.id else { return }
@@ -57,7 +55,6 @@ final class SubCategoryRepository: ObservableObject {
             if let error = error {
                 print("Unable to remove subcategory : \(error.localizedDescription)")
             }
-
         }
     }
 

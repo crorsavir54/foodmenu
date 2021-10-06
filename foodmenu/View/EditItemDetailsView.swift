@@ -90,34 +90,38 @@ struct EditItemDetailsView: View {
                                 Text($0)
                             }
                         }.pickerStyle(.inline)
-                            .labelsHidden()
+//                            .labelsHidden()
                     }
                 }
             }
-        }
-        .navigationTitle("Edit Item")
-        .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showSheet, onDismiss: compareImages) {
-            // Pick an image from the photo library:
-            ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-            //  If you wish to take a photo from camera instead:
-            // ImagePicker(sourceType: .camera, selectedImage: self.$image)
-        }
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Dismiss") {
-                    presentationMode.wrappedValue.dismiss()
+            .sheet(isPresented: $showSheet, onDismiss: compareImages) {
+                // Pick an image from the photo library:
+                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+                //  If you wish to take a photo from camera instead:
+                // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+            }
+            .navigationTitle("Edit Item")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss") {
+                        let newItem = item
+                        didAddItem(newItem)
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Confirm") {
+                        item.subcategory = selectedSubCategory
+                        let newItem = item
+                        didAddItem(newItem)
+                    }
+                    
                 }
             }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Confirm") {
-                    item.subcategory = selectedSubCategory
-                    let newItem = item
-                    didAddItem(newItem)
-                }
-                
-            }
         }
+
+
+
         .onAppear {
             selectedSubCategory = item.subcategory
 

@@ -33,42 +33,44 @@ struct EditSubCategoryView: View {
             }
             .buttonStyle(GrowingButton())
             .foregroundColor(newSubCategory.isEmpty ? .orange.opacity(0.5) : .orange)
-            .disabled(newSubCategory.isEmpty)}
-            ForEach(mainMenu.subCategories, id:\.self) { subcategory in
-                HStack {
-                    Text(subcategory.name)
-                    if subcategory.category.isEmpty {
-                        Text("No category assigned")
-                            .font(.caption2)
-                            .fontWeight(.light)
-                    } else {
-                        Text(subcategory.category)
-                            .font(.caption2)
-                            .fontWeight(.light)
-                    }
-                    Spacer()
-                    Button(action: {
-                        selectedSubCategory = subcategory
-                        editSubCategotyDetails.toggle()
-                    }) {
-                        Image(systemName: "pencil.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(editMode == .inactive ? .orange.opacity(0.5) : .orange)
-                    }
-                    .padding(.trailing)
-                    .buttonStyle(GrowingButton())
-                    .disabled(editMode == .inactive)
+            .disabled(newSubCategory.isEmpty)
+        }
+        ForEach(mainMenu.subCategories, id:\.self) { subcategory in
+            HStack {
+                Text(subcategory.name)
+                if subcategory.category.isEmpty {
+                    Text("No category assigned")
+                        .font(.caption2)
+                        .fontWeight(.light)
+                } else {
+                    Text(subcategory.category)
+                        .font(.caption2)
+                        .fontWeight(.light)
                 }
+                Spacer()
+                Button(action: {
+                    selectedSubCategory = subcategory
+                    editSubCategotyDetails.toggle()
+                }) {
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(editMode == .inactive ? .orange.opacity(0.5) : .orange)
+                }
+//                .padding(.trailing)
+                .buttonStyle(GrowingButton())
+                .disabled(editMode == .inactive)
             }
-            .onMove(perform: move)
-            .onDelete { indices in
-                mainMenu.subCategories.remove(atOffsets: indices)
-                mainMenu.deleteSubCategory()
-            }
+        }
+        .onMove(perform: move)
+        .onDelete { indices in
+            mainMenu.subCategories.remove(atOffsets: indices)
+            mainMenu.deleteSubCategory()
+        }
         .sheet(isPresented: $editSubCategotyDetails) {
             EditSubCategoryDetailsView(mainMenu: mainMenu, subCategory: $selectedSubCategory) { addedSubCategory in
                 mainMenu.insertSubCategory(subCategory: addedSubCategory)
-                editSubCategotyDetails.toggle()
+                mainMenu.updateItemCategory(newName: addedSubCategory.name, oldName: selectedSubCategory.name)
+                editSubCategotyDetails = false
             }
         }
         .environment(\.editMode, $editMode)

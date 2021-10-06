@@ -35,6 +35,29 @@ final class ItemRepository: ObservableObject {
             } ?? []
         }
     }
+    
+    func updateSubcategoryName(newName: String, subcategory: String) {
+        let userId = Auth.auth().currentUser?.uid
+        store.collection(path)
+            .whereField("userId", isEqualTo: userId)
+            .whereField("subcategory", isEqualTo: subcategory)
+            .addSnapshotListener { (snapshot, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            let itemsToUpdate = snapshot?.documents.compactMap {
+                try? $0.data(as: CatItem.self)
+            } ?? []
+                for item in itemsToUpdate {
+                    var newCat = item
+                    newCat.subcategory = newName
+                    self.update(newCat)
+                }
+                print(itemsToUpdate.count)
+        }
+    }
 
     func add(_ item: CatItem) {
         do {

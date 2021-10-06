@@ -71,8 +71,7 @@ struct EditCategoryView: View {
             ToolbarItem{EditButton()}
         }
         .environment(\.editMode, $editMode)
-        .listStyle(.sidebar)
-        
+        .listStyle(SidebarListStyle())
         //            .sheet(isPresented: $isCategoryDetailPresented, onDismiss: didDismiss) {
         ////            EditCategoryDetailView(category: $selectedCategoryEdited)
     }
