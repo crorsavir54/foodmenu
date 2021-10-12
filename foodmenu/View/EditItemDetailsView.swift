@@ -21,7 +21,9 @@ struct EditItemDetailsView: View {
     @State private var imageBefore = UIImage()
     @State private var imageSet = false
     @State private var showSheet = false
+    @State private var showPhotos = false
     @State private var buttonTappable = false
+    @State private var presentCamera = false
     //    @State private var selectedCategory = ""
     
     let formatter: NumberFormatter = {
@@ -34,43 +36,51 @@ struct EditItemDetailsView: View {
         NavigationView {
             VStack {
                 List {
-    //                Section(header: Text("Image")) {
-                        HStack {
-                            if imageSet {
-                                Image(uiImage: self.image)
-                                    .resizable()
-                                    .cornerRadius(50)
-                                    .frame(width: 100, height: 100)
-                                    .background(Color.black.opacity(0.2))
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(Circle())
-                            } else {
-                                AnimatedImage(url: URL(string: item.imageUrl))
-                                    .resizable()
-                                    .scaledToFill()
-                                    .cornerRadius(50)
-                                    .frame(width: 100, height: 100)
-                                    .background(Color.black.opacity(0.2))
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(Circle())
+                    //                Section(header: Text("Image")) {
+                    HStack {
+                        if imageSet {
+                            Image(uiImage: self.image)
+                                .resizable()
+                                .cornerRadius(50)
+                                .frame(width: 100, height: 100)
+                                .background(Color.black.opacity(0.2))
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                        } else {
+                            AnimatedImage(url: URL(string: item.imageUrl))
+                                .resizable()
+                                .scaledToFill()
+                                .cornerRadius(50)
+                                .frame(width: 100, height: 100)
+                                .background(Color.black.opacity(0.2))
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                        }
+                        
+                        Image(systemName: "camera.viewfinder")
+                            .font(.largeTitle)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.orange, .gray)
+                            .padding(.horizontal, 5)
+                            .onTapGesture {
+                                showSheet = true
+                                imageBefore = image
+                                presentCamera = true
+                                showPhotos.toggle()
                             }
-
-                            Text("Change photo")
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                                .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
-                                
-                                .onTapGesture {
-                                    showSheet = true
-                                    imageBefore = image
-                                }
-                        }.listRowBackground(Color.clear)
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.largeTitle)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.orange, .gray)
+                            .padding(.horizontal, 5)
+                            .onTapGesture {
+                                showSheet = true
+                                imageBefore = image
+                                presentCamera = false
+                                showPhotos.toggle()
+                            }
+                    }.listRowBackground(Color.clear)
                         .padding(.horizontal, 20)
-
-    //                }
                     Section(header: Text("Stock Status")) {
                         Toggle("In Stock?", isOn: $item.inStock)
                     }
@@ -90,16 +100,26 @@ struct EditItemDetailsView: View {
                                 Text($0)
                             }
                         }.pickerStyle(.inline)
-//                            .labelsHidden()
+                        //                            .labelsHidden()
                     }
                 }
+                .sheet(isPresented: $showPhotos, onDismiss: compareImages) {
+                    // Pick an image from the photo library:
+                    //                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+                    //  If you wish to take a photo from camera instead:
+                    ImagePicker(sourceType: presentCamera ? .camera : .photoLibrary, selectedImage: self.$image)
+                }
             }
-            .sheet(isPresented: $showSheet, onDismiss: compareImages) {
-                // Pick an image from the photo library:
-                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-                //  If you wish to take a photo from camera instead:
-                // ImagePicker(sourceType: .camera, selectedImage: self.$image)
-            }
+//            .alert("Choose",isPresented: $showSheet) {
+//                Button("Camera") {
+//                    presentCamera = true
+//                    showPhotos.toggle()
+//                }
+//                Button("Browse Photos") {
+//                    presentCamera = false
+//                    showPhotos.toggle()
+//                }
+//            }
             .navigationTitle("Edit Item")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -119,14 +139,14 @@ struct EditItemDetailsView: View {
                 }
             }
         }
-
-
-
+        
+        
+        
         .onAppear {
             selectedSubCategory = item.subcategory
-
+            
         }
-
+        
     }
     
     func compareImages() {
@@ -147,7 +167,7 @@ struct EditItemDetailsView: View {
             print("data ok")
         } else {
             print("data not ok")
-
+            
         }
         // Upload the file to the path "images/"
         let uploadTask = storageRef.putData(data!, metadata: metadata) { (metadata, error) in

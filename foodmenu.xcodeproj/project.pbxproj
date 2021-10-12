@@ -46,6 +46,7 @@
 		D2E17E6627046767009E6294 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = D2E17E6527046767009E6294 /* SDWebImageSwiftUI */; };
 		D2E56E972701F48F0054EAE9 /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E56E962701F48F0054EAE9 /* Orders.swift */; };
 		D2E56E992701FEC20054EAE9 /* OrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E56E982701FEC20054EAE9 /* OrdersView.swift */; };
+		D2E928B927158FA300AD2C5B /* RootPresentationModeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E928B827158FA300AD2C5B /* RootPresentationModeKey.swift */; };
 		D2FDF5942700320A00B811F0 /* EditItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */; };
 		D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */; };
 		D2FEAFF6270DA13000DDAA90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FEAFF5270DA13000DDAA90 /* LoginView.swift */; };
@@ -89,6 +90,7 @@
 		D2E17E62270451CA009E6294 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D2E56E962701F48F0054EAE9 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
 		D2E56E982701FEC20054EAE9 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
+		D2E928B827158FA300AD2C5B /* RootPresentationModeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPresentationModeKey.swift; sourceTree = "<group>"; };
 		D2FDF5932700320A00B811F0 /* EditItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemDetailsView.swift; sourceTree = "<group>"; };
 		D2FDF5952700430800B811F0 /* EditSubCategoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryDetailsView.swift; sourceTree = "<group>"; };
 		D2FEAFF5270DA13000DDAA90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				D2CABA522705645B00EA1972 /* OnBoardScreen.swift */,
+				D2E928B827158FA300AD2C5B /* RootPresentationModeKey.swift */,
 				D2FEAFF5270DA13000DDAA90 /* LoginView.swift */,
 				D288F6532704E4A8009DC47D /* Menu.swift */,
 				D2C953702705E5DA00C6ADF0 /* SignUpView.swift */,
@@ -321,6 +324,7 @@
 				D259C61D2709D44400D4BBED /* ButtonStyles.swift in Sources */,
 				D2CC7E9626FDEB4F005E60CD /* EditCategoryView.swift in Sources */,
 				D2FDF5962700430800B811F0 /* EditSubCategoryDetailsView.swift in Sources */,
+				D2E928B927158FA300AD2C5B /* RootPresentationModeKey.swift in Sources */,
 				D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */,
 				D2E56E972701F48F0054EAE9 /* Orders.swift in Sources */,
 				D2E17E63270451CB009E6294 /* ImagePicker.swift in Sources */,

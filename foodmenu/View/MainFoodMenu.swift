@@ -100,8 +100,9 @@ struct mainFoodMenu: View {
                             .frame(minWidth: geometry.size.width, maxHeight: geometry.size.width/5+20 ,alignment: .leading)
                             .padding(.leading)
                     }
+                    .navigationBarHidden(true)
                     .onAppear {
-                        selectedCategory = mainCategories.initialSelection
+                        selectedCategory = mainCategories.categories.first ?? MainCategory(name: "")
                         print("ON APPEAR \(selectedCategory)")
                     }// Category Scroll View
                     subCategory

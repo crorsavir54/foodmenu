@@ -13,18 +13,21 @@ struct Home: View {
     @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
     @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
     @EnvironmentObject var auth: Authentication
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
             VStack {
-                if status {
+                if auth.loggedOut {
+                    onBoardScreen()
+                }
+                else if status && !anonLoginStatus {
                     LoggedIn(show: $show) //signout
                 }
-                if anonLoginStatus {
+                else if anonLoginStatus && !status {
                     Login(show: $show) //link account
                 }
-                
-                if auth.loggedOut {
+                else {
                     onBoardScreen()
                 }
             }
@@ -47,7 +50,8 @@ struct Home: View {
 
 struct LoggedIn: View {
     @EnvironmentObject var auth: Authentication
-
+    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var show: Bool
     var body: some View {
         VStack {
@@ -58,6 +62,7 @@ struct LoggedIn: View {
             Button(action: {
                 auth.status = .na
                 auth.signOut()
+                presentationMode.wrappedValue.dismiss()
                 //                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
                 //                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
                 
@@ -71,6 +76,7 @@ struct LoggedIn: View {
                 .padding(.top, 25)
         }.onAppear {
             auth.getUser()
+            
 //            auth.checkUser()
             
         }

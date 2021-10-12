@@ -39,7 +39,6 @@ struct Login: View {
                             }
                             Spacer()
                         }
-
                         TextField("Email", text: self.$email)
                             .autocapitalization(.none)
                             .padding()
@@ -74,6 +73,9 @@ struct Login: View {
                         }, label: {
                             if auth.status == .na {
                                 ProgressView()
+                                    .foregroundColor(.white)
+                                    .padding(.vertical)
+                                    .frame(width: UIScreen.main.bounds.width-50)
 
                             } else {
                                 Text("Link")
@@ -120,7 +122,7 @@ struct Login: View {
                     }
                     .alert(isPresented: $auth.showAlert) {
                         Alert(
-                            title: Text("Signup Error"),
+                            title: Text("Login Error"),
                             message: Text(auth.errorMessage))
                     }
                     

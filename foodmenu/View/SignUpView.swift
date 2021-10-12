@@ -17,6 +17,7 @@ struct SignUpView: View {
     @State var color = Color.black.opacity(0.7)
     @State var anonDisabled = false
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var auth: Authentication
     
     var body: some View {
         ZStack {
@@ -43,7 +44,6 @@ struct SignUpView: View {
                                         .autocapitalization(.none)
                                 }
                             }
-                            
                             Button(action: {
                                 withAnimation(.easeInOut) {
                                     visible.toggle()
@@ -58,14 +58,23 @@ struct SignUpView: View {
                         VStack {
                             Button(action: {
                                 withAnimation {
-                                    signUp()
+                                    auth.status = .na
+                                    auth.signUp(email: email, pass: pass)
                                 }
                                 
                             }, label: {
-                                Text("Sign Up")
-                                    .foregroundColor(.white)
-                                    .padding(.vertical)
-                                    .frame(width: UIScreen.main.bounds.width-50)
+                                if auth.status == .na {
+                                    ProgressView()
+                                        .foregroundColor(.white)
+                                        .padding(.vertical)
+                                        .frame(width: UIScreen.main.bounds.width-50)
+                                } else {
+                                    Text("Sign Up")
+                                        .foregroundColor(.white)
+                                        .padding(.vertical)
+                                        .frame(width: UIScreen.main.bounds.width-50)
+                                }
+
                             }).background(Color.orange)
                                 .cornerRadius(10)
                                 .padding(.top, 25)
@@ -74,33 +83,13 @@ struct SignUpView: View {
                     }.padding(.horizontal, 25)
                 }
             }
-//            if self.alert {
-//                ErrorView(alert: self.$alert, error: self.$error)
-//            }
+        }
+        .alert(isPresented: $auth.showAlert) {
+            Alert(
+                title: Text("Sign up Error"),
+                message: Text(auth.errorMessage))
         }
         
-    }
-    
-//    func anonymousSignIn () {
-//        Auth.auth().signInAnonymously()
-//
-//    }
-    
-    func signUp() {
-        if self.email != "" && self.pass != "" {
-            //For login
-            Auth.auth().createUser(withEmail: self.email, password: self.pass, completion: { (authresult, error) in
-            if error != nil {
-                print("error \(error?.localizedDescription)")
-                return
-            }
-            print("success")
-            presentationMode.wrappedValue.dismiss()
-        })
-        }
-        else {
-            self.error = "Please fill properly"
-        }
     }
 }
 

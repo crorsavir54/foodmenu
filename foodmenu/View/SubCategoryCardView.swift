@@ -18,7 +18,8 @@ struct SubCategoryCardView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack(alignment: .center, spacing: geometry.size.height - (geometry.size.height + 15)) {
+//            Negatives spacing for card label = Size of card - 1/2(label size height)+label padding
+            VStack(alignment: .center, spacing: geometry.size.height - (geometry.size.height + (geometry.size.width/12)/2 + 10)) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
                         .frame(width: geometry.size.width, height: geometry.size.height)
@@ -26,7 +27,7 @@ struct SubCategoryCardView: View {
                     if image != "" {
                         AnimatedImage(url: URL(string: image))
                             .resizable()
-                            .scaledToFill()
+                            .scaledToFit()
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                         
@@ -47,16 +48,14 @@ struct SubCategoryCardView: View {
                         Text(subCategoryName)
                             .font(.system(size: geometry.size.width/12))
 //                            .fontWeight(.semibold)
-                            .padding(5)
+                            .padding(7)
                             .background(RoundedRectangle(cornerRadius: 10).fill(.orange))
                             .foregroundColor(.white)
                             .clipped()
-                            .shadow(radius: 2)
-//                            .padding()
                     }
                     Spacer()
                 }
-            }
+            }.padding(.bottom)
         }
         
     }

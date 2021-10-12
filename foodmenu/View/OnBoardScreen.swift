@@ -12,40 +12,43 @@ struct onBoardScreen: View {
     @State var show = false
     @State var status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
     @State var anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
+    @State var isActive = false
     @EnvironmentObject var auth: Authentication
     
     
     var body: some View {
-        VStack {
+        NavigationView {
             VStack {
-                if auth.loggedOut {
-                    signInAnonymously()
-                }
-                else if status == true || anonLoginStatus == true {
+                if status == true || anonLoginStatus == true {
                     mainFoodMenu()
                 }
                 else {
                     signInAnonymously()
                 }
             }
-        }.navigationTitle("")
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
-                    (_) in
-                    self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
-                }
-                NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
-                    (_) in
-                    self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
-                }
+        }
+        .fullScreenCover(isPresented: $auth.loggedOut, content: {
+            signInAnonymously()
+        })
+        .environment(\.rootPresentationMode, self.$isActive)
+        .navigationTitle("")
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
+                (_) in
+                self.anonLoginStatus = UserDefaults.standard.value(forKey: "anonymousSignIn") as? Bool ?? false
             }
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("signIn"), object: nil, queue: .main) {
+                (_) in
+                self.status = UserDefaults.standard.value(forKey: "signIn") as? Bool ?? false
+            }
+        }
     }
 }
 
 struct signInAnonymously: View, KeyboardReadable {
-//    @Binding var show: Bool
+    //    @Binding var show: Bool
     @EnvironmentObject var auth: Authentication
     @State var email = ""
     @State var pass = ""
@@ -61,20 +64,20 @@ struct signInAnonymously: View, KeyboardReadable {
     var body: some View {
         ZStack {
             ZStack(alignment: .topTrailing) {
-                GeometryReader { _ in
+                GeometryReader { geometry in
                     VStack {
                         if !isKeyboardVisible {
                             Image("logo")
                                 .resizable()
                                 .scaledToFit()
                                 .padding(.top, 10)
-                                .frame(width: 250, height: 250)
+                                .frame(width: geometry.size.width/2, height: geometry.size.height/4)
                         }
                         Text("Already have an account?")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(color)
-//                            .padding(.top, 10)
+                        //                            .padding(.top, 10)
                         TextField("Email", text: $email)
                             .autocapitalization(.none)
                             .padding()
@@ -110,22 +113,30 @@ struct signInAnonymously: View, KeyboardReadable {
                         HStack {
                             Spacer()
                             Button(action: {
-//                                self.reset()
+                                //                                self.reset()
                             }, label: {
                                 Text("Forgot password?")
-//                                    .fontWeight(.bold)
+                                //                                    .fontWeight(.bold)
                                     .foregroundColor(mainColor)
                             })
                         }
                         .padding(.top, 10)
                         VStack {
                             Button(action: {
+                                auth.status = .na
                                 auth.verify(email: email, pass: pass)
                             }, label: {
-                                Text("Log in")
-                                    .foregroundColor(.white)
-                                    .padding(.vertical)
-                                    .frame(width: UIScreen.main.bounds.width-50)
+                                if auth.status == .na {
+                                    ProgressView()
+                                        .foregroundColor(.white)
+                                        .padding(.vertical)
+                                        .frame(width: UIScreen.main.bounds.width-50)
+                                } else {
+                                    Text("Log in")
+                                        .foregroundColor(.white)
+                                        .padding(.vertical)
+                                        .frame(width: UIScreen.main.bounds.width-50)
+                                }
                             }).background(mainColor)
                                 .cornerRadius(10)
                                 .padding(.top, 25)
@@ -140,10 +151,18 @@ struct signInAnonymously: View, KeyboardReadable {
                                     }
                                     
                                 }, label: {
-                                    Text("Log in anonymously")
-                                        .foregroundColor(.white)
-                                        .padding(.vertical)
-                                        .frame(width: UIScreen.main.bounds.width-50)
+                                    if auth.status == .na {
+                                        ProgressView()
+                                            .foregroundColor(.white)
+                                            .padding(.vertical)
+                                            .frame(width: UIScreen.main.bounds.width-50)
+                                    } else {
+                                        Text("Log in anonymously")
+                                            .foregroundColor(.white)
+                                            .padding(.vertical)
+                                            .frame(width: UIScreen.main.bounds.width-50)
+                                    }
+                                    
                                 }).background(Color.black.opacity(0.9))
                                     .cornerRadius(10)
                                     .padding(.top, 25)
@@ -164,21 +183,18 @@ struct signInAnonymously: View, KeyboardReadable {
                                     .foregroundColor(mainColor)
                                     .fontWeight(.semibold)
                             }
-                        }
+                        }.padding(.bottom, 10)
                     }.padding(.horizontal, 25)
                 }
                 .sheet(isPresented: $isSignUpPresented) {
                     SignUpView()
+                }
+                .alert(isPresented: $auth.showAlert) {
+                    Alert(
+                        title: Text("Login Error"),
+                        message: Text(auth.errorMessage))
+                }
             }
-//            if self.alert {
-//                ErrorView(alert: self.$alert, error: self.$error)
-//            }
-        }
         }
     }
-    
-//    func anonymousSignIn () {
-//        Auth.auth().signInAnonymously()
-//
-//    }
 }

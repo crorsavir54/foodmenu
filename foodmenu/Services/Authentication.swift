@@ -21,7 +21,6 @@ class Authentication: ObservableObject {
         case succes
         case failed
     }
-    
 //    func checkUser() {
 //        if Auth.auth().currentUser != nil {
 //            return
@@ -99,10 +98,12 @@ class Authentication: ObservableObject {
             Auth.auth().currentUser?.link(with: credential) { (res, error) in
                 if error != nil {
                     self.errorMessage = error!.localizedDescription
+                    self.showAlert = true
                     self.status = .failed
                     print("Error login")
                     return
                 }
+  
                 self.status = .succes
                 print("success linking account")
                 UserDefaults.standard.set(true, forKey: "signIn")
@@ -120,10 +121,10 @@ class Authentication: ObservableObject {
     
     func signUp(email: String, pass: String) {
         if email != "" && pass != "" {
-            //For login
             Auth.auth().createUser(withEmail: email, password: pass, completion: { (authresult, error) in
             if error != nil {
                 self.errorMessage = error!.localizedDescription
+                self.showAlert = true
                 self.status = .failed
                 print("Signup Error")
                 return
@@ -144,6 +145,7 @@ class Authentication: ObservableObject {
         
         do {
             try firebaseAuth.signOut()
+            self.status = .succes
 
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
@@ -151,6 +153,7 @@ class Authentication: ObservableObject {
             self.status = .failed
         }
         self.loggedOut = true
+        
         UserDefaults.standard.set(false, forKey: "signIn")
         NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
         UserDefaults.standard.set(false, forKey: "anonymousSignIn")

@@ -18,21 +18,45 @@ struct EditMenuView: View {
         NavigationView {
             List {
                 NavigationLink (destination: EditCategoryView(mainCategories: mainCategories)) {
-                    Text("Categories")
+                    HStack {
+                        Image(systemName: "rectangle.3.group.bubble.left")
+                            .foregroundStyle(.orange, .orange)
+                        Text("Categories")
+                        
+                    }
+                    
                 }
                 NavigationLink (destination: EditItemsView(mainMenu: mainCategories)) {
-                    Text("Items")
+                    HStack {
+                        Image(systemName: "list.bullet.circle.fill")
+                            .foregroundStyle(.white, .orange)
+                        Text("Items")
+                        
+                    }
+                    
                 }
                 NavigationLink (destination: OrdersView(orderViewModel: orderViewModel)) {
-                    Text("Orders")
+                    HStack {
+                        Image(systemName: "cart.circle.fill")
+                            .foregroundStyle(.white, .orange)
+                        Text("Orders")
+                        
+                    }
+                    
                 }
                 NavigationLink (destination: Home()) {
-                    Text("Account")
+                    HStack {
+                        Image(systemName: "person.circle.fill")
+                            .foregroundStyle(.white, .orange)
+                        Text("Account")
+                        
+                    }
+                    
 //                    Image(systemName: "person.crop.circle.fill")
 //                        .buttonStyle(PlainButtonStyle())
                 }
             }
-            .listStyle(.plain)
+            .listStyle(.insetGrouped)
             .navigationTitle("Manage")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading){
@@ -46,7 +70,6 @@ struct EditMenuView: View {
                     }
                 }
             }
-            
         }
     }
 }
