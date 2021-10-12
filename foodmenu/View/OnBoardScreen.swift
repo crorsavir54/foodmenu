@@ -15,7 +15,6 @@ struct onBoardScreen: View {
     @State var isActive = false
     @EnvironmentObject var auth: Authentication
     
-    
     var body: some View {
         NavigationView {
             VStack {

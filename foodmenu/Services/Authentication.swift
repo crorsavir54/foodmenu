@@ -106,9 +106,9 @@ class Authentication: ObservableObject {
   
                 self.status = .succes
                 print("success linking account")
+                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
                 UserDefaults.standard.set(true, forKey: "signIn")
                 NotificationCenter.default.post(name: NSNotification.Name("signIn"), object: nil)
-                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
                 NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
             }
         }

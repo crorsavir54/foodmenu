@@ -90,6 +90,7 @@ struct EditSubCategoryDetailsView: View {
                         subCategory.category = selectedCategory
                         let newSubCategory = subCategory
                         didAddSubCategory(newSubCategory)
+                        upload(image: image)
                     }
                     
                 }
@@ -102,7 +103,7 @@ struct EditSubCategoryDetailsView: View {
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true
-            upload(image: image)
+            
         }
     }
     

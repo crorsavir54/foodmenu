@@ -127,7 +127,9 @@ struct Login: View {
                     }
                     
                     
-                }.padding(.horizontal, 25)
+                }
+                .padding(.bottom, 10)
+                .padding(.horizontal, 25)
             }
         }
     }

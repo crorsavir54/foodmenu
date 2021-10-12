@@ -234,6 +234,7 @@ struct MenuItem: View {
                         .disabled(!selectedItem.inStock)
                         .foregroundColor(.white)
                     }
+                    .padding(.bottom)
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .shadow(color: Color.black.opacity(0.2),

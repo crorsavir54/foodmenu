@@ -11,6 +11,7 @@ struct EditMenuView: View {
     
     @ObservedObject var mainCategories: OrderMenu
     @ObservedObject var orderViewModel: Orders
+    @EnvironmentObject var auth: Authentication
     @Environment(\.presentationMode) var presentationMode
     @State var showSigninForm = false
     
@@ -18,42 +19,69 @@ struct EditMenuView: View {
         NavigationView {
             List {
                 NavigationLink (destination: EditCategoryView(mainCategories: mainCategories)) {
-                    HStack {
-                        Image(systemName: "rectangle.3.group.bubble.left")
-                            .foregroundStyle(.orange, .orange)
+                    Label {
                         Text("Categories")
                         
+                    } icon: {
+                        ZStack {
+                            Image(systemName: "square.fill")
+                                .foregroundColor(.blue)
+                                .font(.largeTitle)
+                            Image(systemName: "menucard")
+                                .foregroundColor(.white)
+//                                .font(.b)
+
+                        }
+                        
                     }
-                    
                 }
                 NavigationLink (destination: EditItemsView(mainMenu: mainCategories)) {
-                    HStack {
-                        Image(systemName: "list.bullet.circle.fill")
-                            .foregroundStyle(.white, .orange)
+                    Label {
                         Text("Items")
                         
+                    } icon: {
+                        ZStack {
+                            Image(systemName: "square.fill")
+                                .foregroundColor(.pink)
+                                .font(.largeTitle)
+                            Image(systemName: "list.dash")
+                                .foregroundColor(.white)
+                        }
                     }
-                    
                 }
                 NavigationLink (destination: OrdersView(orderViewModel: orderViewModel)) {
-                    HStack {
-                        Image(systemName: "cart.circle.fill")
-                            .foregroundStyle(.white, .orange)
+                    Label {
                         Text("Orders")
                         
+                    } icon: {
+                        ZStack {
+                            Image(systemName: "square.fill")
+                                .foregroundColor(.indigo)
+                                .font(.largeTitle)
+                            Image(systemName: "cart.fill")
+                                .foregroundColor(.white)
+                        }
                     }
-                    
                 }
                 NavigationLink (destination: Home()) {
-                    HStack {
-                        Image(systemName: "person.circle.fill")
-                            .foregroundStyle(.white, .orange)
+                    Label {
                         Text("Account")
                         
+                    } icon: {
+                        ZStack {
+                            Image(systemName: "person.crop.square.fill")
+                                .foregroundColor(.orange)
+                                .font(.largeTitle)
+                        }
+                    }
+                }
+            }
+            .onAppear {
+                if auth.loggedOut {
+                    withAnimation{
+                        presentationMode.wrappedValue.dismiss()
                     }
                     
-//                    Image(systemName: "person.crop.circle.fill")
-//                        .buttonStyle(PlainButtonStyle())
                 }
             }
             .listStyle(.insetGrouped)

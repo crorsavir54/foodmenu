@@ -32,7 +32,7 @@ struct mainFoodMenu: View {
                             isEditModePresented.toggle()
                         }, label: {
                             Image(systemName: "line.horizontal.3")
-                                .font(.system(size: geometry.size.height/30, weight: .thin))
+                                .font(.system(size: geometry.size.height/30, weight: .bold))
                                 .foregroundColor(.orange)
                         })
                         Text("My Restaurant")
@@ -88,6 +88,10 @@ struct mainFoodMenu: View {
                                         .font(UIDevice.current.userInterfaceIdiom == .pad ? .body : .caption)
                                 }
                                 .padding(5)
+                                .onAppear {
+                                    selectedCategory = mainCategories.categories.first ?? MainCategory(name: "")
+                                    print("ON APPEAR \(selectedCategory)")
+                                }// Category Scroll View
                                 .onTapGesture {
                                     withAnimation(.easeInOut){
                                         selectedCategory = category
@@ -101,10 +105,6 @@ struct mainFoodMenu: View {
                             .padding(.leading)
                     }
                     .navigationBarHidden(true)
-                    .onAppear {
-                        selectedCategory = mainCategories.categories.first ?? MainCategory(name: "")
-                        print("ON APPEAR \(selectedCategory)")
-                    }// Category Scroll View
                     subCategory
                 }
                 .edgesIgnoringSafeArea([.bottom])
@@ -199,7 +199,7 @@ struct mainFoodMenu: View {
         GeometryReader { geometry in
             NavigationView{
                 ScrollView {
-                    LazyVGrid(columns: subCategoryColumns, spacing: 10, content: {
+                    LazyVGrid(columns: subCategoryColumns, spacing: 20, content: {
                         ForEach(mainCategories.subCategories.filter{$0.category == selectedCategory.name}, id:\.self) { subcategory in
                             Button(action: {
                                 selectedSubCategory = subcategory
@@ -220,9 +220,10 @@ struct mainFoodMenu: View {
                         }
                     }
                     )
+                
                 }
-                .padding(.leading)
-                .padding(.trailing)
+                .padding(.bottom)
+                .padding(.horizontal)
                 .navigationTitle("\(selectedCategory.name) Menu")
                 .fullScreenCover(isPresented: $isSubcategoryPresented) {
                     MenuItem(items: mainCategories, cart: cart, orderViewModel: orderViewModel, subCategory: $selectedSubCategory)

@@ -133,15 +133,14 @@ struct EditItemDetailsView: View {
                     Button("Confirm") {
                         item.subcategory = selectedSubCategory
                         let newItem = item
+                        upload(image: image)
                         didAddItem(newItem)
+                        
                     }
                     
                 }
             }
         }
-        
-        
-        
         .onAppear {
             selectedSubCategory = item.subcategory
             
@@ -152,7 +151,7 @@ struct EditItemDetailsView: View {
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true
-            upload(image: image)
+            
         }
     }
     
