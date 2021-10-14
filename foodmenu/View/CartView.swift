@@ -27,7 +27,9 @@ struct CartView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 350, height: 350)
-                            Text("It seems you have not selected anything from our menu. Select now, we are ready to serve you")
+                            Text("It seems you have not selected anything from our menu")
+                                .font(.caption)
+                            Text("We are always ready to serve you")
                                 .font(.caption)
                         }
                         Spacer()
@@ -87,26 +89,30 @@ struct CartView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button(action: {
-                    withAnimation(.easeInOut) {
-                        orderViewModel.addOrder(order: Order(order: cartView.cart, status: .pending))
-                        cartView.clearCart()
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }, label: {
-                    Text("Order")
-                        .font(.system(size: 30))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(width: UIScreen.main.bounds.size.width/2, height: 55, alignment: .center)
-//                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
-                }).buttonStyle(ConfirmButton())
-                    .padding()
-                    .clipped()
-                    .shadow(color: Color.black.opacity(0.15),
-                            radius: 3,
-                            x: 3,
-                            y: 3)
+                if cartView.cart.items.isEmpty {
+                    Color.clear
+                } else {
+                    Button(action: {
+                        withAnimation(.easeInOut) {
+                            orderViewModel.addOrder(order: Order(order: cartView.cart, status: .pending))
+                            cartView.clearCart()
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }, label: {
+                        Text("Order")
+                            .font(.system(size: 30))
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(width: UIScreen.main.bounds.size.width/2, height: 55)
+    //                        .background(RoundedRectangle(cornerRadius: 20).fill(Color.orange))
+                    }).buttonStyle(ConfirmButton())
+                        .padding()
+                        .clipped()
+                        .shadow(color: Color.black.opacity(0.15),
+                                radius: 3,
+                                x: 3,
+                                y: 3)
+                }
                 Spacer()
             }
         }.padding()

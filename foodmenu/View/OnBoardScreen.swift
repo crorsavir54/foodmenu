@@ -24,15 +24,15 @@ struct onBoardScreen: View {
                 else {
                     signInAnonymously()
                 }
-            }
+            }        .navigationTitle("")
+                .navigationBarHidden(true)
+                .navigationBarBackButtonHidden(true)
         }
         .fullScreenCover(isPresented: $auth.loggedOut, content: {
             signInAnonymously()
         })
         .environment(\.rootPresentationMode, self.$isActive)
-        .navigationTitle("")
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
+
         .onAppear {
             NotificationCenter.default.addObserver(forName: NSNotification.Name("anonymousSignIn"), object: nil, queue: .main) {
                 (_) in
@@ -76,6 +76,8 @@ struct signInAnonymously: View, KeyboardReadable {
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(color)
+                            .padding(.top, 10)
+                            
                         //                            .padding(.top, 10)
                         TextField("Email", text: $email)
                             .autocapitalization(.none)

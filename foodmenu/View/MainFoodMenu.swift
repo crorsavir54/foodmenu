@@ -20,6 +20,13 @@ struct mainFoodMenu: View {
     @State var isCartPresented = false
     @State var isEditModePresented = false
     
+    // Set navigation bar title color
+    init() {
+        let navBarAppearance = UINavigationBar.appearance()
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.darkGray]
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.darkGray]
+    }
+    
     
     var body: some View {
         ZStack {
@@ -27,7 +34,6 @@ struct mainFoodMenu: View {
                 VStack (spacing: 0) {
                     HStack {
                         Button(action: {
-                            // TODO: - Show menu
                             print("Show Menu")
                             isEditModePresented.toggle()
                         }, label: {
@@ -41,7 +47,6 @@ struct mainFoodMenu: View {
                             .foregroundColor(.orange)
                         Spacer()
                         Button(action: {
-                            //TODO: Show cart content
                             isCartPresented.toggle()
                             print("Show Cart Content")
                         }, label: {
@@ -97,7 +102,6 @@ struct mainFoodMenu: View {
                                         selectedCategory = category
                                         subcategories = mainCategories.allSubCategeries(category: category)
                                     }
-                                    
                                 }
                             }
                         })
@@ -162,13 +166,10 @@ struct mainFoodMenu: View {
                                             .fontWeight(.semibold)
                                         Image(systemName: "arrow.right")
                                     }
-                                    
                                 }
                             }
                         }
-                        
                         .foregroundColor(.white)
-                        //                            .offset(x: -20, y: 0)
                     }
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -194,7 +195,6 @@ struct mainFoodMenu: View {
             ]
         }
     }
-    
     var subCategory: some View {
         GeometryReader { geometry in
             NavigationView{
@@ -220,9 +220,13 @@ struct mainFoodMenu: View {
                         }
                     }
                     )
-                
+                    //Since there is a floating button, extra space is needed for the scrollview
+                    //Extra space is equal to the size of floating button
+                    RoundedRectangle(cornerRadius: 20)
+                        .frame(width: UIScreen.main.bounds.size.width/2-40, height: 50)
+                        .foregroundColor(Color.clear)
+                        .padding(.bottom)
                 }
-                .padding(.bottom)
                 .padding(.horizontal)
                 .navigationTitle("\(selectedCategory.name) Menu")
                 .fullScreenCover(isPresented: $isSubcategoryPresented) {
@@ -241,9 +245,9 @@ struct mainFoodMenu: View {
 }
 
 
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        mainFoodMenu(mainCategories: OrderMenu())
-    }
-}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        mainFoodMenu(mainCategories: OrderMenu())
+//    }
+//}

@@ -24,7 +24,7 @@ final class ItemRepository: ObservableObject {
     func get() {
         let userId = Auth.auth().currentUser?.uid
         store.collection(path)
-            .whereField("userId", isEqualTo: userId)
+            .whereField("userId", isEqualTo: userId as Any)
             .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print(error)
@@ -39,7 +39,7 @@ final class ItemRepository: ObservableObject {
     func updateSubcategoryName(newName: String, subcategory: String) {
         let userId = Auth.auth().currentUser?.uid
         store.collection(path)
-            .whereField("userId", isEqualTo: userId)
+            .whereField("userId", isEqualTo: userId as Any)
             .whereField("subcategory", isEqualTo: subcategory)
             .addSnapshotListener { (snapshot, error) in
             if let error = error {

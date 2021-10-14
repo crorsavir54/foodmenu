@@ -39,7 +39,6 @@ struct SubCategoryCardView: View {
                             .frame(width: geometry.size.width-30, height: geometry.size.height)
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                     }
-
                 }
 
                     

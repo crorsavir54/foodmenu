@@ -60,12 +60,11 @@ struct LoggedIn: View {
                 .fontWeight(.semibold)
             
             Button(action: {
-                auth.status = .na
-                auth.signOut()
-                presentationMode.wrappedValue.dismiss()
-                //                UserDefaults.standard.set(false, forKey: "anonymousSignIn")
-                //                NotificationCenter.default.post(name: NSNotification.Name("anonymousSignIn"), object: nil)
-                
+                withAnimation {
+                    auth.status = .na
+                    auth.signOut()
+                    presentationMode.wrappedValue.dismiss()
+                }
             }, label: {
                 Text("Log out")
                     .foregroundColor(.white)

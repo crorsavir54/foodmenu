@@ -91,7 +91,6 @@ struct MenuItem: View {
                                             .fill(Color.gray)
                                             .opacity(selectedItem.name == item.name ? 0.2 : 0)
                                             .frame(width: geometry.size.width/4.5, height: geometry.size.width/4.5)
-                                        Text(item.name)
                                         AnimatedImage(url: URL(string: item.imageUrl))
                                             .resizable()
                                             .scaledToFill()
@@ -230,11 +229,12 @@ struct MenuItem: View {
                                 }
 
                             }
+                            
                         }
                         .disabled(!selectedItem.inStock)
                         .foregroundColor(.white)
                     }
-                    .padding(.bottom)
+            
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .shadow(color: Color.black.opacity(0.2),
@@ -243,6 +243,7 @@ struct MenuItem: View {
                             y: 3)
                 }
                 .padding(.top)
+                .padding(.bottom)
                 
             } else {
                 VStack {

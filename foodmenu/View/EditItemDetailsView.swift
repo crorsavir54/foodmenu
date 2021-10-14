@@ -36,31 +36,33 @@ struct EditItemDetailsView: View {
         NavigationView {
             VStack {
                 List {
-                    //                Section(header: Text("Image")) {
+                Section(header: Text("Set Image")) {
                     HStack {
-                        if imageSet {
-                            Image(uiImage: self.image)
-                                .resizable()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                        } else {
-                            AnimatedImage(url: URL(string: item.imageUrl))
-                                .resizable()
-                                .scaledToFill()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
+                        Spacer()
+                        VStack {
+                            if imageSet {
+                                Image(uiImage: self.image)
+                                    .resizable()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            } else {
+                                AnimatedImage(url: URL(string: item.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            }
                         }
-                        
                         Image(systemName: "camera.viewfinder")
                             .font(.largeTitle)
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(.orange, .gray)
+                            .foregroundStyle(.orange, .black.opacity(0.8))
                             .padding(.horizontal, 5)
                             .onTapGesture {
                                 showSheet = true
@@ -68,10 +70,10 @@ struct EditItemDetailsView: View {
                                 presentCamera = true
                                 showPhotos.toggle()
                             }
-                        Image(systemName: "photo.on.rectangle")
+                        Image(systemName: "photo.fill")
                             .font(.largeTitle)
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(.orange, .gray)
+                            .foregroundStyle(.orange, .black.opacity(0.8))
                             .padding(.horizontal, 5)
                             .onTapGesture {
                                 showSheet = true
@@ -79,8 +81,9 @@ struct EditItemDetailsView: View {
                                 presentCamera = false
                                 showPhotos.toggle()
                             }
-                    }.listRowBackground(Color.clear)
-                        .padding(.horizontal, 20)
+                        Spacer()
+                    }
+                }
                     Section(header: Text("Stock Status")) {
                         Toggle("In Stock?", isOn: $item.inStock)
                     }
@@ -104,22 +107,9 @@ struct EditItemDetailsView: View {
                     }
                 }
                 .sheet(isPresented: $showPhotos, onDismiss: compareImages) {
-                    // Pick an image from the photo library:
-                    //                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-                    //  If you wish to take a photo from camera instead:
                     ImagePicker(sourceType: presentCamera ? .camera : .photoLibrary, selectedImage: self.$image)
                 }
             }
-//            .alert("Choose",isPresented: $showSheet) {
-//                Button("Camera") {
-//                    presentCamera = true
-//                    showPhotos.toggle()
-//                }
-//                Button("Browse Photos") {
-//                    presentCamera = false
-//                    showPhotos.toggle()
-//                }
-//            }
             .navigationTitle("Edit Item")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -158,24 +148,28 @@ struct EditItemDetailsView: View {
     func upload(image: UIImage) {
         let storage = Storage.storage()
         let storageRef = storage.reference().child("images/\(image).jpg")
-        let data = image.jpegData(compressionQuality: 0.2)
+        var data = Data()
+        if let newImage = image.pngData() {
+            data = newImage
+        } else {
+            if let jpeg = image.jpegData(compressionQuality: 0.2) {
+                data = jpeg
+            } else {
+                return
+            }
+        }
+
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         
-        if data != nil {
-            print("data ok")
-        } else {
-            print("data not ok")
-            
-        }
         // Upload the file to the path "images/"
-        let uploadTask = storageRef.putData(data!, metadata: metadata) { (metadata, error) in
+        _ = storageRef.putData(data, metadata: metadata) { (metadata, error) in
             guard let metadata = metadata else {
                 // Uh-oh, an error occurred!
                 return
             }
             // Metadata contains file metadata such as size, content-type.
-            let size = metadata.size
+//            _ = metadata.size
             // You can also access to download URL after upload.
             storageRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {
@@ -190,6 +184,7 @@ struct EditItemDetailsView: View {
         }
     }
 }
+
 
 //struct EditItemDetailsView_Previews: PreviewProvider {
 //    static var previews: some View {

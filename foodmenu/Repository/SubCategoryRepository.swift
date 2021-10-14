@@ -26,7 +26,7 @@ final class SubCategoryRepository: ObservableObject {
     func get() {
         let userId = Auth.auth().currentUser?.uid
         store.collection(path)
-            .whereField("userId", isEqualTo: userId)
+            .whereField("userId", isEqualTo: userId as Any)
             .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print(error)

@@ -30,7 +30,7 @@ struct EditCategoryView: View {
                     TextField("Icon", text: $newCategoryIcon)
                     
                     Button(action: {
-                        withAnimation {
+                        withAnimation(.easeIn) {
                             mainCategories.insertCategory(category: MainCategory(name: newCategory, icon: newCategoryIcon))
                             newCategory = ""
                             newCategoryIcon = ""

@@ -20,6 +20,9 @@ struct EditSubCategoryDetailsView: View {
     @State private var imageBefore = UIImage()
     @State private var imageSet = false
     @State private var showSheet = false
+    @State private var showPhotos = false
+    @State private var presentCamera = false
+    
     
     var body: some View {
         NavigationView {
@@ -36,43 +39,54 @@ struct EditSubCategoryDetailsView: View {
                 }
                 Section() {
                     HStack {
-                        if imageSet {
-                            Image(uiImage: self.image)
-                                .resizable()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                        } else {
-                            AnimatedImage(url: URL(string: subCategory.imageUrl))
-                                .resizable()
-                                .cornerRadius(50)
-                                .frame(width: 100, height: 100)
-                                .background(Color.black.opacity(0.2))
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
+                        Spacer()
+                        VStack {
+                            if imageSet {
+                                Image(uiImage: self.image)
+                                    .resizable()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            } else {
+                                AnimatedImage(url: URL(string: subCategory.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(50)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color.black.opacity(0.2))
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            }
                         }
-
-                        Text("Change photo")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(Color.orange)
-                            .cornerRadius(16)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 20)
+                        Image(systemName: "camera.viewfinder")
+                            .font(.largeTitle)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.orange, .black.opacity(0.8))
+                            .padding(.horizontal, 5)
                             .onTapGesture {
                                 showSheet = true
                                 imageBefore = image
+                                presentCamera = true
+                                showPhotos.toggle()
                             }
+                        Image(systemName: "photo.fill")
+                            .font(.largeTitle)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.orange, .black.opacity(0.8))
+                            .padding(.horizontal, 5)
+                            .onTapGesture {
+                                showSheet = true
+                                imageBefore = image
+                                presentCamera = false
+                                showPhotos.toggle()
+                            }
+                        Spacer()
                     }
                     .padding(.horizontal, 20)
-                    .sheet(isPresented: $showSheet, onDismiss: compareImages) {
-                        // Pick an image from the photo library:
-                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-                        //  If you wish to take a photo from camera instead:
-                        // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+                    .sheet(isPresented: $showPhotos, onDismiss: compareImages) {
+                        ImagePicker(sourceType: presentCamera ? .camera : .photoLibrary, selectedImage: self.$image)
                     }
                 }
             }
@@ -103,25 +117,34 @@ struct EditSubCategoryDetailsView: View {
     func compareImages() {
         if !imageBefore.isEqual(image) {
             imageSet = true
-            
         }
     }
     
     func upload(image: UIImage) {
         let storage = Storage.storage()
         let storageRef = storage.reference().child("images/\(image).jpg")
-        let data = image.jpegData(compressionQuality: 0.2)
+        var data = Data()
+        if let newImage = image.pngData() {
+            data = newImage
+        } else {
+            if let jpeg = image.jpegData(compressionQuality: 0.2) {
+                data = jpeg
+            } else {
+                return
+            }
+           
+        }
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         
         // Upload the file to the path "images/"
-        let uploadTask = storageRef.putData(data!, metadata: metadata) { (metadata, error) in
+        _ = storageRef.putData(data, metadata: metadata) { (metadata, error) in
             guard let metadata = metadata else {
                 // Uh-oh, an error occurred!
                 return
             }
             // Metadata contains file metadata such as size, content-type.
-            let size = metadata.size
+//            _ = metadata.size
             // You can also access to download URL after upload.
             storageRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {

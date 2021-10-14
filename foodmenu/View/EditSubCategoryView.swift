@@ -22,7 +22,7 @@ struct EditSubCategoryView: View {
         HStack {
             TextField("Subcategory Name", text: $newSubCategory)
             Button(action: {
-                withAnimation {
+                withAnimation(.easeIn) {
                     mainMenu.insertSubCategory(subCategory: SubCat(name: newSubCategory, category: ""))
                     newSubCategory = ""
                 }
