@@ -9,9 +9,9 @@
 - Firebase Cloud Integration
 
 <p float="left">
-  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/LogInScreen.png" align="middle" width="24%" />
-  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/MenuScreen.png" align="middle" width="24%" /> 
-  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/ManageScreen.png" align="middle" width="24%" />
+  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/LoginScreen.png" align="middle" width="32%" />
+  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/MenuScreen.png" align="middle" width="32%" /> 
+  <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/ManageScreen.png" align="middle" width="32%" />
 </p>
 
 
