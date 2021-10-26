@@ -15,5 +15,10 @@
   <img src="https://github.com/crorsavir54/foodmenu/blob/main/screenshots/ManageScreen.png" align="middle" width="24%" />
 </p>
 
+#### Tech
+- Firebase
+- Combine Framework
+- MVVM
+
 
 
