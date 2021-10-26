@@ -37,6 +37,7 @@
 		D2CC7E9A26FDF722005E60CD /* EditSubCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */; };
 		D2CC7E9C26FDF9D1005E60CD /* EditItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */; };
 		D2CC7E9E26FE0005005E60CD /* EditMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */; };
+		D2CE7E2A271D4B480019EFE9 /* CustomSheetUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CE7E29271D4B480019EFE9 /* CustomSheetUI.swift */; };
 		D2E17E54270440EC009E6294 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D2E17E53270440EC009E6294 /* FirebaseAuth */; };
 		D2E17E56270440EC009E6294 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D2E17E55270440EC009E6294 /* FirebaseFirestore */; };
 		D2E17E58270440EC009E6294 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = D2E17E57270440EC009E6294 /* FirebaseFirestoreSwift-Beta */; };
@@ -87,6 +88,7 @@
 		D2CC7E9926FDF722005E60CD /* EditSubCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubCategoryView.swift; sourceTree = "<group>"; };
 		D2CC7E9B26FDF9D1005E60CD /* EditItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsView.swift; sourceTree = "<group>"; };
 		D2CC7E9D26FE0005005E60CD /* EditMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMenuView.swift; sourceTree = "<group>"; };
+		D2CE7E29271D4B480019EFE9 /* CustomSheetUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetUI.swift; sourceTree = "<group>"; };
 		D2E17E62270451CA009E6294 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D2E56E962701F48F0054EAE9 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
 		D2E56E982701FEC20054EAE9 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				D2298B3826FF1B5200D82FA0 /* Array+RemoveDuplicates+Difference.swift */,
 				D2E17E62270451CA009E6294 /* ImagePicker.swift */,
 				D259C61C2709D44400D4BBED /* ButtonStyles.swift */,
+				D2CE7E29271D4B480019EFE9 /* CustomSheetUI.swift */,
 				D288F64F2704DAF7009DC47D /* Services */,
 				D244C68C2702F03E00FC22B5 /* Repository */,
 				D200AA6626F4397900EFADE7 /* Model */,
@@ -316,6 +319,7 @@
 				D28F45C42702DFA800CCEF7D /* MainCategory.swift in Sources */,
 				D2BAB2B326F32E7400B8961A /* MainFoodMenu.swift in Sources */,
 				D2CABA532705645B00EA1972 /* OnBoardScreen.swift in Sources */,
+				D2CE7E2A271D4B480019EFE9 /* CustomSheetUI.swift in Sources */,
 				D244C69227030AB500FC22B5 /* ItemRepository.swift in Sources */,
 				D2CABA552705784E00EA1972 /* Authentication.swift in Sources */,
 				D2E56E992701FEC20054EAE9 /* OrdersView.swift in Sources */,
