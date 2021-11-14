@@ -18,6 +18,8 @@
 #### Tech
 - Firebase
 - Combine Framework
+- UIKit
+- SwiftUI
 - MVVM
 
 
